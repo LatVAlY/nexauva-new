@@ -59,8 +59,10 @@ export function Navigation() {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-              Get Started
+            <Button variant="outline" size="sm" className="gap-2 bg-transparent" asChild>
+              <a href="https://calendly.com/hello-nexauva/30min" target="_blank" rel="noopener noreferrer">
+                Get Started
+              </a>
             </Button>
           </div>
 
@@ -85,8 +87,10 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
-            <Button variant="outline" size="sm" className="w-full gap-2 mt-4 bg-transparent">
-              Get Started
+            <Button variant="outline" size="sm" className="w-full gap-2 mt-4 bg-transparent" asChild>
+              <a href="https://calendly.com/hello-nexauva/30min" target="_blank" rel="noopener noreferrer">
+                Get Started
+              </a>
             </Button>
           </div>
         </div>

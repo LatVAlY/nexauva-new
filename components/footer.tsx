@@ -7,13 +7,13 @@ export function Footer() {
     { href: "/services", label: "Services" },
     { href: "/#projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
-    { href: "/privacy", label: "Impressum" },
-    { href: "/terms", label: "Privacy Policy" },
+    { href: "/terms", label: "Impressum" },
+    { href: "/privacy", label: "Privacy Policy" },
   ]
 
   const socialLinks = [
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Twitter, href: "#", label: "Twitter" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/abdelfettah-latrache/", label: "LinkedIn" },
+    { icon: Twitter, href: "https://x.com/AbdelVA", label: "Twitter" },
   ]
 
   return (
@@ -41,6 +41,8 @@ export function Footer() {
                 href={social.href}
                 className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                 aria-label={social.label}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <social.icon className="w-4 h-4" />
               </a>

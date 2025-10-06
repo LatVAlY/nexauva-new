@@ -17,6 +17,7 @@ const plans = [
       "Best practices implementation",
     ],
     cta: "Book Now",
+    ctaHref: "https://buy.stripe.com/bJeeVec1V8BA2kG1lu5Vu01",
     popular: false,
   },
   {
@@ -34,6 +35,7 @@ const plans = [
       "Priority booking",
     ],
     cta: "Book Package",
+    ctaHref: "https://buy.stripe.com/eVqdRa4ztdVU4sOd4c5Vu00",
     popular: true,
     savings: "Total: €800 (Save €200)",
   },
@@ -53,6 +55,7 @@ const plans = [
       "Training & knowledge transfer",
     ],
     cta: "Contact Sales",
+    ctaHref: "/contact",
     popular: false,
   },
 ]
@@ -133,9 +136,19 @@ export default function PricingPage() {
                 className={`w-full gap-2 ${
                   plan.popular ? "bg-white text-background hover:bg-white/90" : "bg-white/10 hover:bg-white/20"
                 }`}
+                asChild
               >
-                {plan.cta}
-                <ArrowRight className="w-4 h-4" />
+                {plan.ctaHref?.startsWith("http") ? (
+                  <a href={plan.ctaHref} target="_blank" rel="noopener noreferrer">
+                    {plan.cta}
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                ) : (
+                  <a href={plan.ctaHref || "/contact"}>
+                    {plan.cta}
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                )}
               </Button>
             </Card>
           ))}

@@ -32,10 +32,10 @@ export default function ContactPage() {
               Facing technical challenges or product concerns? We're here to assist
             </p>
             <a
-              href="mailto:landio@support.com"
+              href="mailto:hello@nexauva.com"
               className="text-foreground hover:text-muted-foreground transition-colors"
             >
-              landio@support.com
+              hello@nexauva.com
             </a>
           </Card>
 
@@ -47,8 +47,10 @@ export default function ContactPage() {
             <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
               Let's collaborate on custom solutions or discuss product insights
             </p>
-            <Button variant="outline" size="sm" className="bg-transparent">
-              Book a call
+            <Button variant="outline" size="sm" className="bg-transparent" asChild>
+              <a href="https://calendly.com/hello-nexauva/30min" target="_blank" rel="noopener noreferrer">
+                Book a call
+              </a>
             </Button>
           </Card>
         </div>

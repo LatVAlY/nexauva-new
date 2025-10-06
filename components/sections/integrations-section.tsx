@@ -15,6 +15,7 @@ import {
   Layers,
   Circle,
 } from "lucide-react"
+import { useMotionValue, useScroll, useVelocity, useSpring, useTransform, useAnimationFrame, motion, wrap } from "framer-motion"
 
 const carouselConfigs = [
   {
@@ -124,12 +125,50 @@ function MarqueeCarousel({ config }: { config: (typeof carouselConfigs)[0] }) {
     </section>
   )
 }
+const ParallaxText = ({ children, baseVelocity = 100 }: { children: string; baseVelocity: number }) => {
+  const baseX = useMotionValue(0)
+  const { scrollY } = useScroll()
+  const scrollVelocity = useVelocity(scrollY)
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400,
+  })
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    clamp: false,
+  })
+
+  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`)
+
+  const directionFactor = useRef<number>(1)
+  useAnimationFrame((t, delta) => {
+    let moveBy = directionFactor.current * baseVelocity * (delta / 1000)
+
+    if (velocityFactor.get() < 0) {
+      directionFactor.current = -1
+    } else if (velocityFactor.get() > 0) {
+      directionFactor.current = 1
+    }
+
+    moveBy += directionFactor.current * moveBy * velocityFactor.get()
+    baseX.set(baseX.get() + moveBy)
+  })
+
+  return (
+    <div className="relative whitespace-nowrap py-8">
+      <motion.div className="flex text-6xl md:text-8xl font-bold text-primary/20 font-heading" style={{ x }}>
+        <span className="block mr-8">{children}</span>
+        <span className="block mr-8">{children}</span>
+        <span className="block mr-8">{children}</span>
+        <span className="block mr-8">{children}</span>
+      </motion.div>
+    </div>
+  )
+}
 
 export function IntegrationsSection() {
   return (
     <section id="integrations" className="py-20 relative">
       <div className="absolute inset-0 border border-border/50 pointer-events-none rounded-full" />
-      <div className="absolute -bottom-10 -right-10 w-96 h-96 bg-muted rounded-full -rotate-[13deg] opacity-30" />
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Heading */}
@@ -156,9 +195,24 @@ export function IntegrationsSection() {
 
         {/* Integrations Carousels */}
         <div className="space-y-8">
-          {carouselConfigs.map((config) => (
-            <MarqueeCarousel key={config.id} config={config} />
-          ))}
+         <motion.div
+          className="container mx-auto px-4 mb-16"
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          // variants={staggerContainer}
+        >
+          {/* Parallax Scrolling Text */}
+          <ParallaxText baseVelocity={-2}>
+            GitHub • Slack • Figma • Notion •
+          </ParallaxText>
+          <ParallaxText baseVelocity={2}>
+            Stripe • Airtable • Zapier • Dropbox •
+          </ParallaxText>
+          <ParallaxText baseVelocity={-1.5}>
+            AWS • Vercel • Netlify • Supabase •
+          </ParallaxText>
+        </motion.div>
 
           {/* Light decorative div */}
           <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent w-full" />

@@ -16,19 +16,42 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
 })
 
+// Prefer a configured site URL for absolute social image links
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+
 export const metadata: Metadata = {
-  title: "Landio - Modern SaaS Template",
-  description: "AI Automation for Modern Businesses Made Simple",
-  generator: "v0.app",
+  title: "Nexauva – Where Ideas Meet Intelligence",
+  description: "Nexauva delivers intelligent AI solutions: automation, analytics, conversational AI, and consulting.",
+  generator: "nextjs",
+  metadataBase: new URL(siteUrl),
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    // Optionally provide an Apple touch icon if available
+    // You can replace this with a dedicated 180x180 PNG later
+    apple: [{ url: "/simple-2.png" }],
+  },
   openGraph: {
-    title: "Landio - Modern SaaS Template",
-    description: "AI Automation for Modern Businesses Made Simple",
+    title: "Nexauva – Where Ideas Meet Intelligence",
+    description: "Intelligent AI solutions: automation, analytics, conversational AI, and consulting.",
     type: "website",
+    url: siteUrl,
+    images: [
+      {
+        url: "/simple-2.png",
+        width: 1200,
+        height: 630,
+        alt: "Nexauva – Where Ideas Meet Intelligence",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Landio - Modern SaaS Template",
-    description: "AI Automation for Modern Businesses Made Simple",
+    title: "Nexauva – Where Ideas Meet Intelligence",
+    description: "Intelligent AI solutions: automation, analytics, conversational AI, and consulting.",
+    images: ["/simple-2.png"],
   },
 }
 

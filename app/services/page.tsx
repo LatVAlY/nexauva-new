@@ -92,9 +92,11 @@ export default function ServicesPage() {
             <p className="text-muted-foreground mb-8">
               Let's discuss how our AI automation solutions can transform your business
             </p>
-            <Button size="lg" className="gap-2 bg-white text-background hover:bg-white/90">
-              Schedule a Consultation
-              <ArrowRight className="w-4 h-4" />
+            <Button size="lg" className="gap-2 bg-white text-background hover:bg-white/90" asChild>
+              <a href="https://calendly.com/hello-nexauva/30min" target="_blank" rel="noopener noreferrer">
+                Schedule a Consultation
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </Button>
           </Card>
         </div>

@@ -9,7 +9,7 @@ export default function PrivacyPage() {
 
             <h2 className="text-2xl font-medium mt-12 mb-4">Introduction</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              This Privacy Policy describes how Landio collects, uses, and shares your personal information when you use
+              This Privacy Policy describes how Nexauva collects, uses, and shares your personal information when you use
               our services.
             </p>
 
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
 
             <h2 className="text-2xl font-medium mt-12 mb-4">Contact Us</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              If you have any questions about this Privacy Policy, please contact us at landio@support.com
+              If you have any questions about this Privacy Policy, please contact us at hello@nexauva.com
             </p>
           </div>
         </div>

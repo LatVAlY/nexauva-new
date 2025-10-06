@@ -44,7 +44,7 @@ const projects = [
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="py-24 lg:py-32 relative bg-secondary/20">
+    <section id="projects" className="py-20 lg:py-20 relative bg-secondary/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">

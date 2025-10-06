@@ -155,7 +155,7 @@ export function StackedTestimonialCarousel() {
                 </div>
 
                 {/* Image on the right */}
-                <div className="relative w-2/5 min-w-[220px] h-full overflow-hidden rounded-xl">
+                <div className="relative w-2/5 min-w-[120px] h-full overflow-hidden rounded-xl">
                   <Image
                     src={testimonial.image || "/placeholder.svg"}
                     alt={testimonial.name}

@@ -15,54 +15,50 @@ type TeamMember = {
 
 const team: TeamMember[] = [
   {
-    name: "Ikta Sollork",
+    name: "Abdefettah Latrache",
     role: "Founder / Machine learning Engineer",
     image:
       "https://pbs.twimg.com/profile_images/1564466669459734528/5_2XCjie_400x400.jpg",
     socials: {
       twitter: "https://x.com/AbdelVA",
-      instagram: "https://www.instagram.com/",
       linkedin: "https://www.linkedin.com/in/abdelfettah-latrache/",
     },
   },
   {
-    name: "Alex Meyer",
-    role: "AI Researcher",
+    name: "Henoch Munzimba",
+    role: "Designer",
     image:
-      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=640&auto=format&fit=crop",
+      "https://media.licdn.com/dms/image/v2/D4E03AQEXYja91svVGA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1693409299270?e=1762387200&v=beta&t=vdcUZ9fUU6O42ANVhmmCxOblkVnmpaqc0msKvJn1rx0",
     socials: {
-      twitter: "https://twitter.com/",
-      instagram: "https://www.instagram.com/",
-      linkedin: "https://www.linkedin.com/",
+       linkedin: "https://www.linkedin.com/in/henoch-munzimba-3a07091b3/",
     },
   },
-  {
-    name: "Sara Weber",
-    role: "Senior Designer",
-    image:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=640&auto=format&fit=crop",
-    socials: {
-      twitter: "https://twitter.com/",
-      instagram: "https://www.instagram.com/",
-      linkedin: "https://www.linkedin.com/",
-    },
-  },
+  // {
+  //   name: "Sara Weber",
+  //   role: "Senior Designer",
+  //   image:
+  //     "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=640&auto=format&fit=crop",
+  //   socials: {},
+  // },
 ]
 
 export function TeamSection() {
+  // Center the card if only one team member exists
+  const isSingle = team.length === 1;
   return (
-    <section id="team" className="py-24 lg:py-32 relative">
+    <section id="team" className="py-20 lg:py-20 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-light mb-4 text-balance">Our Team</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+         <div className="text-center mb-20">
+          <h2 className="text-5xl lg:text-6xl font-light mb-6 text-balance">
+            Our  <span className="font-serif italic text-muted-foreground">Team</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             A multidisciplinary team blending AI research, engineering, and design.
           </p>
         </div>
-
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Use a single centered column when there's only one card */}
+        <div className={`grid gap-8 grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 place-items-center`}>
           {team.map((member) => (
             <div
               key={member.name}

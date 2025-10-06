@@ -94,7 +94,7 @@ export function FeaturesSection() {
   }, [])
 
   return (
-    <section className="py-24 lg:py-32 relative">
+    <section className="py-20 lg:py-20 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -106,7 +106,7 @@ export function FeaturesSection() {
         </div>
 
         {/* Demo Cards Grid: row 1 (2 items), row 2 (3 items); mobile: 1 per row */}
-        <div className="space-y-6 mb-12">
+        <div className="space-y-6 mb-2">
           <motion.div
             variants={containerStagger}
             initial="hidden"
@@ -118,7 +118,7 @@ export function FeaturesSection() {
               <CodeDemoCard />
             </motion.div>
             <motion.div variants={fadeUp}>
-              <RepetitiveTasksCard />
+              <RealTimeIntelligenceCard />
             </motion.div>
           </motion.div>
 
@@ -136,26 +136,10 @@ export function FeaturesSection() {
               <ProcessAutomationCard />
             </motion.div>
             <motion.div variants={fadeUp}>
-              <RealTimeIntelligenceCard />
+              <RepetitiveTasksCard />
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Features Grid */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <Card
-              key={index}
-              className="p-8 bg-card/50 backdrop-blur-sm border-border hover:bg-card/80 transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
-                <feature.icon className="w-6 h-6 text-foreground" />
-              </div>
-              <h3 className="text-xl font-medium mb-3 text-balance">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-            </Card>
-          ))}
-        </div> */}
       </div>
     </section>
   )

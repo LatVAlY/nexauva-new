@@ -99,7 +99,7 @@ export function RepetitiveTasksCard() {
 
             {/* Screen Element with Vertical Auto-Scroll Carousel */}
             <div className="border border-[rgb(16,19,28)] bg-gradient-to-b from-[rgb(16,19,28)] to-black rounded-xl shadow-[inset_0_2px_1px_0_rgba(207,231,255,0.15)] relative overflow-hidden z-10 flex items-center justify-center p-4">
-              <div ref={containerRef} className="carousel-container relative w-48 h-80 mx-auto">
+              <div ref={containerRef} className="carousel-container relative w-48 h-62 mx-auto">
                 <div ref={trackRef} className="carousel-track flex flex-col gap-4">
                   {/* Task Items */}
                   <div className="carousel-item flex items-center bg-[#0a0f1a] rounded-lg p-3 h-16">

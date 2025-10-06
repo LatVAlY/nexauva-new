@@ -21,19 +21,19 @@ export default function TermsPage() {
 
             <h2 className="text-2xl font-medium mt-12 mb-4">Intellectual Property</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              All content, features, and functionality of our services are owned by Landio and are protected by
+              All content, features, and functionality of our services are owned by Nexauva and are protected by
               international copyright, trademark, and other intellectual property laws.
             </p>
 
             <h2 className="text-2xl font-medium mt-12 mb-4">Limitation of Liability</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              To the maximum extent permitted by law, Landio shall not be liable for any indirect, incidental, special,
+              To the maximum extent permitted by law, Nexauva shall not be liable for any indirect, incidental, special,
               consequential, or punitive damages resulting from your use of our services.
             </p>
 
             <h2 className="text-2xl font-medium mt-12 mb-4">Contact Information</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              For questions about these Terms, please contact us at landio@support.com
+              For questions about these Terms, please contact us at hello@nexauva.com
             </p>
           </div>
         </div>
