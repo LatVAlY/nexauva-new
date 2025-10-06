@@ -3,6 +3,33 @@ import { FileText } from "lucide-react"
 
 const blogPosts = [
   {
+    slug: "unleashing-ai-power-with-openai-sdk-and-orchestrator-models",
+    title: "Unleashing AI Power: Integrating OpenAI SDK with Advanced Orchestrator Models",
+    excerpt:
+      "Dive into how Nexauva leverages the OpenAI SDK alongside sophisticated orchestrator models to build seamless, scalable AI workflows that drive enterprise innovation.",
+    date: "Oct 1, 2025",
+    category: "Article",
+    image: "/openai-sdk-orchestrator-diagram.jpg",
+  },
+  {
+    slug: "building-scalable-ai-backends-with-go-services",
+    title: "Building Scalable AI Backends with Go Services: A Nexauva Guide",
+    excerpt:
+      "Explore how Nexauva uses Go services to create high-performance, reliable backends for AI applications, ensuring seamless scalability and integration.",
+    date: "Sep 25, 2025",
+    category: "Resources",
+    image: "/go-lang-ai-backend-architecture.jpg",
+  },
+  {
+    slug: "success-story-transforming-data-analytics-with-ai-ingestion-at-specwise",
+    title: "Success Story: Revolutionizing Data Analytics with AI and Ingestion Pipelines at SpecWise",
+    excerpt:
+      "Discover how Nexauva empowered SpecWise, an automotive leader, to harness AI-driven data analytics through advanced ingestion strategies, unlocking unprecedented insights and efficiency.",
+    date: "Sep 20, 2025",
+    category: "Case Study",
+    image: "/data-analytics-ai-dashboard.jpg",
+  },
+  {
     slug: "the-future-of-workflows-why-ai-automation-is-the-standard",
     title: "The Future of Workflows: Why AI Automation Is the Standard",
     excerpt:
