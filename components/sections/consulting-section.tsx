@@ -140,7 +140,7 @@ export function ConsultingSection() {
                   size="lg"
                   asChild
                   className={`w-full gap-2 ${
-                    plan.popular ? "bg-white text-background hover:bg-white/90" : "bg-white/10 hover:bg-white/20"
+                    plan.popular ? "bg-white text-background hover:bg-white/90" : "bg-white/80 hover:bg-white"
                   }`}
                 >
                   {isExternal ? (

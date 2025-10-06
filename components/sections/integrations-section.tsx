@@ -140,22 +140,44 @@ const ParallaxText = ({ children, baseVelocity = 100 }: { children: string; base
   const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`)
 
   const directionFactor = useRef<number>(1)
+
+  // Mouse control: move faster left/right based on cursor position
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const mouseFactor = useMotionValue(0) // -1 (left) .. 0 .. 1 (right)
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+    const ratio = (e.clientX - rect.left) / rect.width // 0..1
+    const centered = Math.max(-1, Math.min(1, (ratio - 0.5) * 2))
+    mouseFactor.set(centered)
+  }
+  const handleMouseLeave = () => mouseFactor.set(0)
+
   useAnimationFrame((t, delta) => {
     let moveBy = directionFactor.current * baseVelocity * (delta / 1000)
 
-    if (velocityFactor.get() < 0) {
+    const vf = velocityFactor.get()
+    const mf = mouseFactor.get() // -1..1
+    const effective = vf + mf * 2 // mouse has stronger influence
+
+    if (effective < 0) {
       directionFactor.current = -1
-    } else if (velocityFactor.get() > 0) {
+    } else if (effective > 0) {
       directionFactor.current = 1
     }
 
-    moveBy += directionFactor.current * moveBy * velocityFactor.get()
+    moveBy += directionFactor.current * Math.abs(moveBy) * Math.abs(effective)
     baseX.set(baseX.get() + moveBy)
   })
 
   return (
-    <div className="relative whitespace-nowrap py-8">
-      <motion.div className="flex text-6xl md:text-8xl font-bold text-primary/20 font-heading" style={{ x }}>
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden py-8"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div className="flex whitespace-nowrap text-6xl md:text-8xl font-bold text-primary/20 font-heading" style={{ x }}>
         <span className="block mr-8">{children}</span>
         <span className="block mr-8">{children}</span>
         <span className="block mr-8">{children}</span>
