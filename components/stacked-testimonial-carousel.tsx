@@ -17,6 +17,19 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
+    name: "Jules",
+    title: "Jules's AI Success",
+    description:
+      "Jules, the CEO of Dogy AI, transformed their social app efforts using AI-powered tools. This shift resulted in 45% improvement in users personalization, leading to a surge in brand loyalty",
+    image: "https://media.licdn.com/dms/image/v2/D5603AQETo2XOHePOJg/profile-displayphoto-shrink_400_400/B56ZYzk6LNHEAk-/0/1744622036337?e=1762992000&v=beta&t=bm-IMizRZSCaQQWY6UMVyVC_wABYoxO67sCbdfjkgBQ",
+    stats: [
+      { value: "70%", label: "growth in marketing" },
+      { value: "50%", label: "rise in engagement" },
+    ],
+    quote:
+      "They grasped our pain points, knew exactly who we needed to reach, and helped us stand out. Their solutions delivered real, <span class='font-serif italic tracking-wide text-[rgb(213,219,230)]'>impactful</span> results!",
+  },
+  {
     name: "Max",
     title: "Max's SaaS Revolution",
     description:
@@ -28,19 +41,6 @@ const testimonials: Testimonial[] = [
     ],
     quote:
       "Transformed our operations with seamless AI integration. Costs slashed, productivity soared—pure revolution!",
-  },
-  {
-    name: "Emily",
-    title: "Emily's E-commerce Success",
-    description:
-      "Emily, the CEO of BloomTech, transformed their marketing efforts using AI-powered tools. This shift resulted in a 60% increase in ROI and a 45% improvement in customer personalization, leading to a surge in brand loyalty",
-    image: "https://framerusercontent.com/images/GuFZFCQnRSOpKJkAPlCkaRUGIjc.png",
-    stats: [
-      { value: "70%", label: "growth in sales" },
-      { value: "50%", label: "rise in engagement" },
-    ],
-    quote:
-      "They grasped our pain points, knew exactly who we needed to reach, and helped us stand out. Their solutions delivered real, <span class='font-serif italic tracking-wide text-[rgb(213,219,230)]'>impactful</span> results!",
   },
   {
     name: "Sophia",
