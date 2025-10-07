@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: "/simple-2.png",
+        url: "/meta-link-share.png",
         width: 1200,
         height: 630,
         alt: "Nexauva – Where Ideas Meet Intelligence",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nexauva – Where Ideas Meet Intelligence",
     description: "Intelligent AI solutions: automation, analytics, conversational AI, and consulting.",
-    images: ["/simple-2.png"],
+    images: ["/meta-link-share.png"],
   },
 }
 
