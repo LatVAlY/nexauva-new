@@ -64,7 +64,7 @@ export function StackedTestimonialCarousel() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % 3)
-    }, 4000)
+    }, 6000)
     return () => clearInterval(interval)
   }, [])
 
