@@ -177,7 +177,7 @@ const ParallaxText = ({ children, baseVelocity = 100 }: { children: string; base
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <motion.div className="flex whitespace-nowrap text-6xl md:text-8xl font-bold text-primary/20 font-heading" style={{ x }}>
+      <motion.div className="flex whitespace-nowrap text-2xl md:text-8xl font-bold text-primary/20 font-heading" style={{ x }}>
         <span className="block mr-8">{children}</span>
         <span className="block mr-8">{children}</span>
         <span className="block mr-8">{children}</span>
