@@ -17,7 +17,7 @@ const instrumentSerif = Instrument_Serif({
 })
 
 // Prefer a configured site URL for absolute social image links
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nexauva.com"
 
 export const metadata: Metadata = {
   title: "Nexauva – Where Ideas Meet Intelligence",
