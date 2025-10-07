@@ -73,7 +73,7 @@ export function FAQSection() {
         ))}
       </div>
 
-      <div className="text-center">
+      {/* <div className="text-center">
         <Card className="p-8 bg-card/50 backdrop-blur-sm border-border max-w-2xl mx-auto">
           <h3 className="text-xl font-medium mb-2">Still Have Questions?</h3>
           <p className="text-muted-foreground mb-6">Feel free to get in touch with us today!</p>
@@ -81,7 +81,7 @@ export function FAQSection() {
             Ask A Question
           </Button>
         </Card>
-      </div>
+      </div> */}
     </section>
   )
 }

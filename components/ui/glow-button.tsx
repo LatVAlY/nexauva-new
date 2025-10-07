@@ -29,23 +29,26 @@ export function GlowButton({ href, children, className, target = "_blank", rel =
         className,
       )}
     >
-      {/* Glow (bottom) */}
+      {/* Glow (bottom) - Enhanced to spread outward with larger gradient and smoother expansion */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -bottom-2 inset-x-4 h-12 rounded-lg blur-[15px] transition-all duration-500 ease-out group-hover:inset-x-0 group-hover:h-16 group-hover:blur-[25px] group-hover:opacity-100"
-        style={{
-          background: "radial-gradient(25% 50% at 50% 100%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)",
-          opacity: 0.8,
-        }}
+        className={cn(
+          "pointer-events-none absolute -bottom-2 inset-x-4 h-12 rounded-lg transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-60",
+          "blur-[15px] bg-[radial-gradient(25%_50%_at_50%_100%,rgba(255,255,255,1)_0%,rgba(255,255,255,0)_100%)]",
+          "group-hover:inset-x-0 group-hover:-bottom-4 group-hover:h-20 group-hover:blur-[35px] group-hover:opacity-100",
+          "group-hover:bg-[radial-gradient(120%_200%_at_50%_100%,rgba(255,255,255,1)_0%,rgba(255,255,255,0)_100%)]"
+        )}
       />
 
-      {/* Stroke highlight */}
+      {/* Stroke highlight - Enhanced gradient spread for fuller coverage */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-lg transition-opacity duration-500 ease-out opacity-60 group-hover:opacity-100"
-        style={{
-          background: "radial-gradient(20.7% 50% at 50% 100%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 100%)",
-        }}
+        className={cn(
+          "pointer-events-none absolute inset-0 rounded-lg transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-50",
+          "bg-[radial-gradient(20.7%_50%_at_50%_100%,rgba(255,255,255,0.75)_0%,rgba(255,255,255,0)_100%)]",
+          "group-hover:opacity-100",
+          "group-hover:bg-[radial-gradient(80%_150%_at_50%_100%,rgba(255,255,255,0.75)_0%,rgba(255,255,255,0)_100%)]"
+        )}
       />
 
       {/* Subtle outline */}

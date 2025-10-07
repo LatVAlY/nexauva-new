@@ -2,7 +2,8 @@ import { ContactForm } from "@/components/contact-form"
 import { FAQSection } from "@/components/faq-section"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Mail, Calendar } from "lucide-react"
+import { Mail, Calendar, ArrowRight } from "lucide-react"
+import { GlowButton } from "@/components/ui/glow-button"
 
 export default function ContactPage() {
   return (
@@ -47,11 +48,14 @@ export default function ContactPage() {
             <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
               Let's collaborate on custom solutions or discuss product insights
             </p>
-            <Button variant="outline" size="sm" className="bg-transparent" asChild>
-              <a href="https://calendly.com/hello-nexauva/30min" target="_blank" rel="noopener noreferrer">
-                Book a call
-              </a>
-            </Button>
+            <GlowButton
+              href="https://calendly.com/hello-nexauva/30min"
+              ariaLabel="Book a free call on Calendly"
+              className="bg-white/5 rounded-lg"
+            >
+              <span>Book A Free Call</span>
+              <ArrowRight className="w-4 h-4" />
+            </GlowButton>
           </Card>
         </div>
 

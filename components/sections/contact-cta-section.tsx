@@ -1,5 +1,7 @@
 'use client'
 import { Instrument_Serif } from "next/font/google"
+import { GlowButton } from "../ui/glow-button"
+import { ArrowRight } from "lucide-react"
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -36,9 +38,14 @@ export function ContactCTASection() {
         >
           <div className="absolute inset-0 btn-glow rounded-lg"></div>
           <div className="absolute inset-0 btn-stroke rounded-lg"></div>
-          <div className="relative bg-black px-8 py-4 rounded-lg border border-white/10">
-            <p className="text-white font-medium m-0">Book A Free Call</p>
-          </div>
+           <GlowButton
+              href="https://calendly.com/hello-nexauva/30min"
+              ariaLabel="Book a free call on Calendly"
+              className="bg-white/5 rounded-lg"
+            >
+              <span>Book A Free Call</span>
+              <ArrowRight className="w-4 h-4" />
+            </GlowButton>
         </a>
 
         {/* Social Links */}

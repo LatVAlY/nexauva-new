@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 const steps = [
   {
@@ -104,26 +105,64 @@ export function InteractiveProcessSection() {
 
               {/* Content Card */}
               <div className="card-inner relative px-3 pb-4 md:px-6 md:pb-6">
-                {steps.map((step, index) => (
-                  <div
-                    key={index}
-                    className={`content-change flex flex-col md:flex-row transition-opacity duration-500 ${
-                      currentStep === index ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none"
-                    }`}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={currentStep}
+                    className="content-change flex flex-col md:flex-row"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <div
+                    <motion.div
                       className="w-full h-52 sm:h-64 md:w-96 md:h-96 relative overflow-hidden bg-cover bg-center rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
-                      style={{ backgroundImage: `url('${step.image}')` }}
+                      style={{ backgroundImage: `url('${steps[currentStep].image}')` }}
+                      initial={{ opacity: 0, scale: 1.02 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                     />
-                    <div className="text-section flex-1 p-5 md:p-6 flex flex-col bg-transparent rounded-b-xl md:rounded-r-xl md:rounded-bl-none">
-                      <div className="number text-2xl md:text-3xl font-medium text-blue-400 mb-3 md:mb-4">{step.number}</div>
-                      <div className="sub-container flex-1 p-3 md:p-4 mb-4 md:mb-6">
-                        <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 md:mb-4">{step.title}</h3>
-                        <p className="text-muted-foreground text-sm md:text-base leading-relaxed">{step.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+
+                    <motion.div
+                      className="text-section flex-1 p-5 md:p-6 flex flex-col bg-transparent rounded-b-xl md:rounded-r-xl md:rounded-bl-none"
+                      variants={{
+                        hidden: { opacity: 0, y: 10 },
+                        show: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { staggerChildren: 0.08, delayChildren: 0.06 },
+                        },
+                      }}
+                      initial="hidden"
+                      animate="show"
+                      exit="hidden"
+                    >
+                      <motion.div
+                        className="number text-2xl md:text-3xl font-medium text-blue-400 mb-3 md:mb-4"
+                        variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }}
+                      >
+                        {steps[currentStep].number}
+                      </motion.div>
+                      <motion.div
+                        className="sub-container flex-1 p-3 md:p-4 mb-4 md:mb-6"
+                        variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }}
+                      >
+                        <motion.h3
+                          className="text-xl md:text-2xl font-semibold text-foreground mb-3 md:mb-4"
+                          variants={{ hidden: { opacity: 0, y: 6 }, show: { opacity: 1, y: 0 } }}
+                        >
+                          {steps[currentStep].title}
+                        </motion.h3>
+                        <motion.p
+                          className="text-muted-foreground text-sm md:text-base leading-relaxed"
+                          variants={{ hidden: { opacity: 0, y: 6 }, show: { opacity: 1, y: 0 } }}
+                        >
+                          {steps[currentStep].description}
+                        </motion.p>
+                      </motion.div>
+                    </motion.div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
           </div>
