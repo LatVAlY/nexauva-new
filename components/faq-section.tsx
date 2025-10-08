@@ -31,6 +31,21 @@ const faqs = [
     answer:
       "Absolutely. We use enterprise-grade security practices and ensure compliance with major data privacy standards like GDPR.",
   },
+  {
+    question: "Do you build custom web and mobile apps?",
+    answer:
+      "Yes. We design and develop bespoke web and mobile applications aligned to your business goals, from MVPs to enterprise-grade products.",
+  },
+  {
+    question: "Can you deliver cloud-native and microservices architectures?",
+    answer:
+      "We architect scalable, cloud-native systems using containers, Kubernetes, and microservices to support growth and reliability.",
+  },
+  {
+    question: "Which clouds and technologies do you support?",
+    answer:
+      "We work across AWS, Azure, and GCP with modern stacks (TypeScript/Node.js, Python, GoLang, Flutter, React/Next.js, React Native, PostgreSQL) and CI/CD best practices.",
+  },
 ];
 
 export default function FAQSection() {
@@ -87,33 +102,19 @@ export default function FAQSection() {
           </motion.div>
 
           <motion.h2
-            className="text-5xl md:text-6xl font-medium mb-6"
+            className="text-5xl lg:text-6xl font-light mb-6 text-balance"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <span
-              style={{
-                background:
-                  "linear-gradient(161deg, rgb(213, 219, 230) 51.66%, rgb(4, 7, 13) 166%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Frequently Asked{" "}
-            </span>
-            <span
-              className="font-serif italic"
-              style={{ color: "rgb(228, 233, 242)" }}
-            >
-              Questions
-            </span>
+             Frequently Asked 
+              <span className="font-serif italic text-muted-foreground pl-2">
+                Questions
+              </span>
           </motion.h2>
 
           <motion.p
-            className="text-lg opacity-60"
-            style={{ color: "rgb(213, 219, 230)" }}
+            className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.6 }}
             transition={{ duration: 0.6, delay: 0.2 }}

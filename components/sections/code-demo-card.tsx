@@ -164,9 +164,9 @@ export function CodeDemoCard() {
         {/* Right Side Content */}
         <div className="flex flex-col justify-center space-y-6 relative">
           <div className="space-y-4">
-            <h3 className="text-3xl font-semibold leading-tight">Custom AI Agent Development</h3>
+            <h3 className="text-3xl font-semibold leading-tight">Custom AI & Software Development</h3>
             <p className="text-muted-foreground text-base leading-relaxed">
-              We build intelligent agents that learn, adapt, and integrate seamlessly with your existing tools and workflows.
+              We create software solutions designed to meet your specific business requirements, featuring modern architecture and scalable technology stacks.
             </p>
           </div>
         </div>

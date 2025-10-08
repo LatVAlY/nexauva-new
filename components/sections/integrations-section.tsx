@@ -30,7 +30,7 @@ const ParallaxText = ({
     clamp: false,
   });
 
-  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+  const x = useTransform(baseX, (v) => `${wrap(10, -45, v)}%`);
 
   const directionFactor = useRef<number>(1);
 
