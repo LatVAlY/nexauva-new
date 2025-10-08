@@ -1,14 +1,21 @@
-"use client"
+"use client";
 
-import { Card } from "@/components/ui/card"
-import { Bot, Building2, BarChart3, MessageSquare, Target, Zap } from "lucide-react"
-import { useEffect } from "react"
-import { motion, type Variants } from "framer-motion"
-import { CodeDemoCard } from "./code-demo-card"
-import { RealTimeIntelligenceCard } from "./real-time-intelligence-card"
-import { IntelligentAnalyticsCard } from "./intelligent-analytics-card"
-import { ProcessAutomationCard } from "./process-automation-card"
-import { RepetitiveTasksCard } from "./repetitive-tasks-card"
+import { Card } from "@/components/ui/card";
+import {
+  Bot,
+  Building2,
+  BarChart3,
+  MessageSquare,
+  Target,
+  Zap,
+} from "lucide-react";
+import { useEffect } from "react";
+import { motion, type Variants } from "framer-motion";
+import { CodeDemoCard } from "./code-demo-card";
+import { RealTimeIntelligenceCard } from "./real-time-intelligence-card";
+import { IntelligentAnalyticsCard } from "./intelligent-analytics-card";
+import { ProcessAutomationCard } from "./process-automation-card";
+import { RepetitiveTasksCard } from "./repetitive-tasks-card";
 
 const features = [
   {
@@ -47,7 +54,7 @@ const features = [
     description:
       "Robotic Process Automation (RPA) and intelligent workflow solutions that reduce manual tasks and optimize business processes.",
   },
-]
+];
 
 // Framer Motion variants
 const fadeUp: Variants = {
@@ -57,51 +64,72 @@ const fadeUp: Variants = {
     y: 0,
     transition: { type: "spring", stiffness: 120, damping: 20 },
   },
-}
+};
 
 const containerStagger: Variants = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.15 },
   },
-}
+};
 
 export function FeaturesSection() {
   useEffect(() => {
-    const lines = document.querySelectorAll<HTMLElement>(".code-line")
+    const lines = document.querySelectorAll<HTMLElement>(".code-line");
     lines.forEach((line, index) => {
       setTimeout(() => {
-        line.classList.add("visible")
-      }, 500 + index * 100)
-    })
+        line.classList.add("visible");
+      }, 500 + index * 100);
+    });
 
-    const codeContainer = document.querySelector<HTMLElement>(".code-container")
-    let interval: number | undefined
+    const codeContainer =
+      document.querySelector<HTMLElement>(".code-container");
+    let interval: number | undefined;
     if (codeContainer) {
-      let scrollPos = 0
+      let scrollPos = 0;
       interval = window.setInterval(() => {
-        scrollPos += 2
-        codeContainer.scrollTop = scrollPos
+        scrollPos += 2;
+        codeContainer.scrollTop = scrollPos;
         if (scrollPos >= 80) {
-          window.clearInterval(interval)
+          window.clearInterval(interval);
         }
-      }, 200)
+      }, 200);
     }
 
     return () => {
-      if (interval) window.clearInterval(interval)
-    }
-  }, [])
+      if (interval) window.clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <section className="py-20 lg:py-20 relative">
+    <section id="features" className="py-20 lg:py-20 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-light mb-4 text-balance">Comprehensive AI & Software Solutions</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            From AI product development to enterprise digitalization, we deliver end-to-end solutions that transform
-            your business
+          <div className="inline-flex items-center bg-card border border-border rounded-full px-4 py-2 mb-8">
+            <svg
+              className="w-4 h-4 text-muted-foreground mr-2"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+            </svg>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              FEATURES
+            </span>
+          </div>
+          <h2 className="text-5xl md:text-6xl font-medium text-center mb-4">
+            <span className="text-foreground">Comprehensive AI & </span>
+            <span className="font-serif italic text-muted-foreground">
+              Software Solutions
+            </span>
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            From AI product development to enterprise digitalization, we deliver
+            end-to-end solutions that transform your business
           </p>
         </div>
 
@@ -142,5 +170,5 @@ export function FeaturesSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

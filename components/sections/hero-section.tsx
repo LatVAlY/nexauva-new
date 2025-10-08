@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import { ArrowRight } from "lucide-react"
-import { useEffect, useState } from "react"
-import HeroBackground from "@/components/sections/hero-background"
-import { GlowButton } from "@/components/ui/glow-button"
+import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import HeroBackground from "@/components/sections/hero-background";
+import { GlowButton } from "@/components/ui/glow-button";
+import { CalendlyIcon, LinkedInIcon, XIcon } from "../icons/social";
 
 export function HeroSection() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true)
-  }, [])
+    setIsVisible(true);
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -30,7 +31,9 @@ export function HeroSection() {
         <div className="max-w-5xl mx-auto text-center">
           <h1
             className={`text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light leading-tight mb-6 transition-all duration-700 delay-100 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
             <span className="text-balance font-bold">Nexauva</span>
@@ -43,17 +46,21 @@ export function HeroSection() {
           {/* Subheading */}
           <p
             className={`text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto transition-all duration-700 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
-            Unlock the full potential of Artificial Intelligence with expert guidance in infrastructure, integration,
-            and scalable system design
+            Unlock the full potential of Artificial Intelligence with expert
+            guidance in infrastructure, integration, and scalable system design
           </p>
 
           {/* CTA Button - Framer-like Glow */}
           <div
             className={`flex items-center justify-center gap-4 mb-12 transition-all duration-700 delay-300 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
             <GlowButton
@@ -65,15 +72,40 @@ export function HeroSection() {
               <ArrowRight className="w-4 h-4" />
             </GlowButton>
           </div>
+          <div className="flex items-center gap-4 justify-center">
+            <a
+              href="https://www.linkedin.com/in/abdelfettah-latrache/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center rounded-full p-2"
+              aria-label="LinkedIn"
+            >
+              <LinkedInIcon className="w-5 h-5 social-icon" />
+            </a>
+            <div className="w-px h-6 separation"></div>
+            <a
+              href="https://x.com/AbdelVA"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center rounded-full p-2"
+              aria-label="X"
+            >
+              <XIcon className="w-5 h-5 social-icon" />
+            </a>
+          </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2">
-          <div className="w-1 h-2 bg-white/40 rounded-full" />
+      <a
+        href="#features"
+        aria-label="Scroll to features"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce group focus:outline-none focus:ring-2 focus:ring-white/20 rounded-full"
+      >
+        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2 group-hover:border-white/40">
+          <div className="w-1 h-2 bg-white/40 rounded-full group-hover:bg-white/60" />
         </div>
-      </div>
+      </a>
     </section>
-  )
+  );
 }

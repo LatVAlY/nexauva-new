@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
@@ -21,7 +22,7 @@ export function Navigation() {
     { href: "/about", label: "About Us" },
     { href: "/services", label: "Services" },
     // { href: "/#projects", label: "Projects" },
-    { href: "/blog", label: "Blog" },
+    // { href: "/blog", label: "Blog" },
     { href: "/contact", label: "Contact" },
   ]
 
@@ -34,15 +35,14 @@ export function Navigation() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex flex-col gap-0.5">
-              <div className="h-1 w-8 bg-white rounded-full" />
-              <div className="h-1 w-8 bg-white rounded-full" />
-              <div className="h-1 w-8 bg-white rounded-full" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-foreground">nexauva</span>
-              <span className="text-[10px] text-muted-foreground -mt-1">Where Ideas Meet Intelligence</span>
-            </div>
+            <Image
+              src="/logo-transparent-small.png"
+              alt="nexauva logo"
+              width={140}
+              height={32}
+              priority
+              className="h-8 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}

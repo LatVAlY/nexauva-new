@@ -2,6 +2,8 @@
 import { Instrument_Serif } from "next/font/google"
 import { GlowButton } from "../ui/glow-button"
 import { ArrowRight } from "lucide-react"
+import { LinkedInIcon, XIcon, CalendlyIcon } from "@/components/icons/social"
+import { motion } from "framer-motion"
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -38,14 +40,14 @@ export function ContactCTASection() {
         >
           <div className="absolute inset-0 btn-glow rounded-lg"></div>
           <div className="absolute inset-0 btn-stroke rounded-lg"></div>
-           <GlowButton
-              href="https://calendly.com/hello-nexauva/30min"
-              ariaLabel="Book a free call on Calendly"
-              className="bg-white/5 rounded-lg"
-            >
-              <span>Book A Free Call</span>
-              <ArrowRight className="w-4 h-4" />
-            </GlowButton>
+          <GlowButton
+            href="https://calendly.com/hello-nexauva/30min"
+            ariaLabel="Book a free call on Calendly"
+            className="bg-white/5 rounded-lg"
+          >
+            <span>Book A Free Call</span>
+            <ArrowRight className="w-4 h-4" />
+          </GlowButton>
         </a>
 
         {/* Social Links */}
@@ -57,9 +59,7 @@ export function ContactCTASection() {
             className="w-10 h-10 flex items-center justify-center rounded-full p-2"
             aria-label="LinkedIn"
           >
-            <svg className="w-5 h-5 social-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-            </svg>
+            <LinkedInIcon className="w-5 h-5 social-icon" />
           </a>
           <div className="w-px h-6 separation"></div>
           <a
@@ -69,9 +69,7 @@ export function ContactCTASection() {
             className="w-10 h-10 flex items-center justify-center rounded-full p-2"
             aria-label="X"
           >
-            <svg className="w-5 h-5 social-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
+            <XIcon className="w-5 h-5 social-icon" />
           </a>
           <div className="w-px h-6 separation"></div>
           <a
@@ -81,18 +79,21 @@ export function ContactCTASection() {
             className="w-10 h-10 flex items-center justify-center rounded-full p-2"
             aria-label="Calendly"
           >
-            <svg className="w-5 h-5 social-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2" />
-              <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2" />
-              <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2" />
-            </svg>
+            <CalendlyIcon className="w-5 h-5 social-icon" />
           </a>
         </div>
 
         {/* Email / Contact note */}
         <p className="text-center text-gray-400 text-sm m-0">
-          Prefer email? Reach us via the contact form
+          Prefer email?{" "}
+          <motion.a
+            href="/contact/#form"
+            whileHover={{ x: 2, opacity: 1 }}
+            whileTap={{ scale: 0.98 }}
+            className="text-gray-300 underline underline-offset-4 decoration-white/20 hover:decoration-white/40"
+          >
+            Reach us via the contact form
+          </motion.a>
         </p>
       </div>
 

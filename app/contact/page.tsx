@@ -1,9 +1,12 @@
+'use client'
+
 import { ContactForm } from "@/components/contact-form"
 import { FAQSection } from "@/components/faq-section"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Mail, Calendar, ArrowRight } from "lucide-react"
 import { GlowButton } from "@/components/ui/glow-button"
+import { motion } from "framer-motion"
 
 export default function ContactPage() {
   return (
@@ -60,12 +63,12 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Form */}
-        <div className="max-w-3xl mx-auto mb-32">
+        <motion.div id="form" className="max-w-3xl mx-auto mb-32" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5, ease: 'easeOut' }}>
           <div className="text-center mb-12">
             <h2 className="text-3xl font-light mb-4">We'd love to help! Let us know how</h2>
           </div>
           <ContactForm />
-        </div>
+        </motion.div>
 
         {/* FAQ Section */}
         <FAQSection />

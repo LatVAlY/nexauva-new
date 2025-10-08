@@ -8,6 +8,7 @@ import "./globals.css"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Suspense } from "react"
+import { BackToTop } from "@/components/ui/back-to-top"
 
 const instrumentSerif = Instrument_Serif({
   weight: "400",
@@ -68,6 +69,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </Suspense>
+        <BackToTop />
         <Analytics />
       </body>
     </html>
