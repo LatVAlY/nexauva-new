@@ -31,6 +31,20 @@ const testimonials: Testimonial[] = [
       "They grasped our pain points, knew exactly who we needed to reach, and helped us stand out. Their solutions delivered real, <span class='font-serif italic tracking-wide text-[rgb(213,219,230)]'>impactful</span> results!",
   },
   {
+    name: "Ibrohim Abdivokhidov",
+    title: "AI Solutions & Software Builder",
+    description:
+      "Ibrohim develops intelligent AI systems and custom software that help businesses automate processes, make smarter decisions, and scale efficiently. His innovative solutions turn complex challenges into seamless, data-driven workflows.",
+    image:
+      "https://media.licdn.com/dms/image/v2/D4D03AQHSfm4JYxQLGw/profile-displayphoto-scale_400_400/B4DZkLviEhGsAg-/0/1756838634684?e=1762992000&v=beta&t=jfx4YhsaavuzNi0LhgAHpBHLwoYM-G8Ap_7m7RHgYWM",
+    stats: [
+      { value: "40%", label: "boost in efficiency" },
+      { value: "50%", label: "growth in automation" },
+    ],
+    quote:
+      "Ibrohim transformed our operations with intelligent automation and reliable AI tools. His work didn’t just improve performance — it redefined how we innovate.",
+  },
+  {
     name: "Max",
     title: "Max's SaaS Revolution",
     description:
@@ -44,20 +58,6 @@ const testimonials: Testimonial[] = [
     quote:
       "Transformed our operations with seamless AI integration. Costs slashed, productivity soared—pure revolution!",
   },
-  // {
-  //   name: "Ibrohim Abdivokhidov",
-  //   title: "AI Solutions & Software Builder",
-  //   description:
-  //     "Ibrohim develops intelligent AI systems and custom software that help businesses automate processes, make smarter decisions, and scale efficiently. His innovative solutions turn complex challenges into seamless, data-driven workflows.",
-  //   image:
-  //     "https://media.licdn.com/dms/image/v2/D4D03AQHSfm4JYxQLGw/profile-displayphoto-scale_400_400/B4DZkLviEhGsAg-/0/1756838634684?e=1762992000&v=beta&t=jfx4YhsaavuzNi0LhgAHpBHLwoYM-G8Ap_7m7RHgYWM",
-  //   stats: [
-  //     { value: "40%", label: "boost in efficiency" },
-  //     { value: "50%", label: "growth in automation" },
-  //   ],
-  //   quote:
-  //     "Ibrohim transformed our operations with intelligent automation and reliable AI tools. His work didn’t just improve performance — it redefined how we innovate.",
-  // },
 ];
 
 export function StackedTestimonialCarousel() {
