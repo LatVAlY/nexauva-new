@@ -86,9 +86,9 @@ export function RepetitiveTasksCard() {
   }, [])
 
   return (
-    <div className="relative border border-[rgba(216,231,242,0.07)] rounded-2xl p-6 md:p-8 shadow-[inset_0_2px_1px_0_rgba(207,231,255,0.15)] overflow-hidden mb-16 bg-gradient-to-b from-[#060910] to-[#04070d]">
+    <div className="relative border border-[rgba(216,231,242,0.07)] rounded-2xl p-6 md:p-8 shadow-[inset_0_2px_1px_0_rgba(207,231,255,0.15)] overflow-hidden bg-gradient-to-b from-[#060910] to-[#04070d] h-full flex flex-col">
       {/* Main Container */}
-      <div className="relative bg-[rgb(4,7,13)] border border-[rgba(216,231,242,0.07)] rounded-2xl shadow-[inset_0_2px_1px_0_rgba(207,231,255,0.15)]">
+      <div className="relative bg-[rgb(4,7,13)] border border-[rgba(216,231,242,0.07)] rounded-2xl shadow-[inset_0_2px_1px_0_rgba(207,231,255,0.15)] flex-1 flex flex-col">
         {/* Scaled Graphic */}
         <div className="will-change-transform opacity-100 scale-90 origin-center md:scale-100">
           <div className="relative">
