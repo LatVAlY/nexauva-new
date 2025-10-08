@@ -193,6 +193,7 @@ export function StackedTestimonialCarousel() {
                     src={testimonial.image || "/placeholder.svg"}
                     alt={testimonial.name}
                     fill
+                    sizes="(max-width: 1024px) 40vw, 400px"
                     className="object-cover rounded-xl"
                   />
                 </div>

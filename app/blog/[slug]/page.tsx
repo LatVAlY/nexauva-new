@@ -273,7 +273,7 @@ export default async function BlogPostPage({
 
           {/* Featured Image */}
           <div className="relative h-96 rounded-xl overflow-hidden mb-12">
-            <Image src={post.image || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
+            <Image src={post.image || "/placeholder.svg"} alt={post.title} fill sizes="100vw" className="object-cover" />
           </div>
 
           {/* Content */}

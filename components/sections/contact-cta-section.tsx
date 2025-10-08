@@ -13,7 +13,7 @@ const instrumentSerif = Instrument_Serif({
 
 export function ContactCTASection() {
   return (
-    <section className="relative w-full p-12 flex items-center justify-center bg-black">
+    <section id="contact" className="relative w-full p-12 flex items-center justify-center bg-black">
       <div className="w-full max-w-4xl flex flex-col items-center gap-8 relative z-10">
         {/* Tag */}
         <div className="flex items-center gap-2 px-4 py-1 bg-transparent rounded-full">

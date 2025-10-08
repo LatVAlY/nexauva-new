@@ -1,12 +1,13 @@
-'use client'
+"use client";
 
-import { ContactForm } from "@/components/contact-form"
-import { FAQSection } from "@/components/faq-section"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Mail, Calendar, ArrowRight } from "lucide-react"
-import { GlowButton } from "@/components/ui/glow-button"
-import { motion } from "framer-motion"
+import { ContactForm } from "@/components/contact-form";
+
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Mail, Calendar, ArrowRight } from "lucide-react";
+import { GlowButton } from "@/components/ui/glow-button";
+import { motion } from "framer-motion";
+import FAQSection from "@/components/faq-section";
 
 export default function ContactPage() {
   return (
@@ -15,10 +16,15 @@ export default function ContactPage() {
         {/* Header */}
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6">
-            <span className="text-xs text-muted-foreground uppercase tracking-wider">Contact</span>
+            <span className="text-xs text-muted-foreground uppercase tracking-wider">
+              Contact
+            </span>
           </div>
           <h1 className="text-5xl lg:text-6xl font-light mb-6 text-balance">
-            Reach Us <span className="font-serif italic text-muted-foreground">Anytime</span>
+            Reach Us{" "}
+            <span className="font-serif italic text-muted-foreground">
+              Anytime
+            </span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Have questions or need help? We're here for you
@@ -33,7 +39,8 @@ export default function ContactPage() {
             </div>
             <h3 className="text-xl font-medium mb-2">Email Us</h3>
             <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-              Facing technical challenges or product concerns? We're here to assist
+              Facing technical challenges or product concerns? We're here to
+              assist
             </p>
             <a
               href="mailto:hello@nexauva.com"
@@ -63,16 +70,22 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Form */}
-        <motion.div id="form" className="max-w-3xl mx-auto mb-32" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.5, ease: 'easeOut' }}>
+        <motion.div
+          id="form"
+          className="max-w-3xl mx-auto mb-32"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-light mb-4">We'd love to help! Let us know how</h2>
+            <h2 className="text-3xl font-light mb-4">
+              We'd love to help! Let us know how
+            </h2>
           </div>
           <ContactForm />
         </motion.div>
-
-        {/* FAQ Section */}
-        <FAQSection />
       </div>
     </main>
-  )
+  );
 }
