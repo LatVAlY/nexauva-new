@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 interface Testimonial {
@@ -63,12 +63,28 @@ const testimonials: Testimonial[] = [
 export function StackedTestimonialCarousel() {
   const [currentIndex, setCurrentIndex] = useState(2);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  // Measure and lock the tallest quote height to prevent layout shift
+  const [maxQuoteHeight, setMaxQuoteHeight] = useState<number>(0);
+  const quoteRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % 3);
     }, 6000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const measure = () => {
+      const heights = quoteRefs.current.map((el) => el?.clientHeight ?? 0);
+      const max = Math.max(0, ...heights);
+      setMaxQuoteHeight(max);
+    };
+
+    // Initial measure and on resize (for responsive reflow)
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
   const getCardStyle = (index: number) => {
@@ -79,19 +95,17 @@ export function StackedTestimonialCarousel() {
       0: { scale: 1, translateY: 0, blur: 0, opacity: 1, z: 30 },
       1: { scale: 0.95, translateY: -60, blur: 1, opacity: 1, z: 20 },
       2: { scale: 0.9, translateY: -110, blur: 1, opacity: 1, z: 10 },
-    };
+    } as const;
 
     const style = baseStyles[diff as keyof typeof baseStyles];
 
     if (isHovered && diff !== 0) {
       return {
-        transform: `scale(${style.scale}) translateY(${
-          style.translateY - 20
-        }px)`,
+        transform: `scale(${style.scale}) translateY(${style.translateY - 20}px)`,
         filter: `blur(${style.blur}px)`,
         opacity: style.opacity,
         zIndex: style.z + 5,
-      };
+      } as const;
     }
 
     return {
@@ -99,11 +113,11 @@ export function StackedTestimonialCarousel() {
       filter: `blur(${style.blur}px)`,
       opacity: style.opacity,
       zIndex: style.z,
-    };
+    } as const;
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-12">
+    <div className="w-full max-w-4xl mx-auto py-12 relative">
       {/* Stacked Cards */}
       <div
         className="relative h-[500px] flex items-end justify-center mb-12"
@@ -188,9 +202,30 @@ export function StackedTestimonialCarousel() {
         ))}
       </div>
 
+      {/* Hidden quote measurer to lock height */}
+      <div className="absolute opacity-0 pointer-events-none -z-50 w-full">
+        {testimonials.map((t, i) => (
+          <div
+            key={i}
+            ref={(el) => {
+              quoteRefs.current[i] = el;
+            }}
+            className="mx-auto max-w-4xl mb-8"
+          >
+            <h3
+              className="text-[32px] leading-[1.4em] tracking-[-0.03em] text-center text-[rgba(184,199,217,0.5)]"
+              dangerouslySetInnerHTML={{ __html: t.quote }}
+            />
+          </div>
+        ))}
+      </div>
+
       {/* Bottom Quote */}
       <div className="text-center">
-        <div className="mx-auto max-w-4xl mb-8">
+        <div
+          className="mx-auto max-w-4xl mb-8"
+          style={{ minHeight: maxQuoteHeight || undefined }}
+        >
           <h3
             className="text-[32px] leading-[1.4em] tracking-[-0.03em] text-center text-[rgba(184,199,217,0.5)]"
             dangerouslySetInnerHTML={{
