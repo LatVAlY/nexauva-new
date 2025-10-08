@@ -1,20 +1,14 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
 import HeroBackground from "@/components/sections/hero-background";
 import { GlowButton } from "@/components/ui/glow-button";
-import { CalendlyIcon, LinkedInIcon, XIcon } from "../icons/social";
+import { LinkedInIcon, XIcon } from "../icons/social";
+import { motion } from "framer-motion";
 
 export function HeroSection() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-15">
       {/* Background animation scoped to hero only */}
       <HeroBackground />
 
@@ -28,40 +22,42 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1
-            className={`text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light leading-tight mb-6 transition-all duration-700 delay-100 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
+        <motion.div
+          className="max-w-5xl mx-auto text-center"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light leading-tight mb-6"
           >
             <span className="text-balance font-bold">Nexauva</span>
             <br />
             <span className="font-serif italic text-muted-foreground text-5xl sm:text-6xl">
               Where Ideas Meet Intelligence
             </span>
-          </h1>
+          </motion.h1>
 
           {/* Subheading */}
-          <p
-            className={`text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto transition-all duration-700 delay-200 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
+          <motion.p
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
             Unlock the full potential of Artificial Intelligence with expert
             guidance in infrastructure, integration, and scalable system design
-          </p>
+          </motion.p>
 
           {/* CTA Button - Framer-like Glow */}
-          <div
-            className={`flex items-center justify-center gap-4 mb-12 transition-all duration-700 delay-300 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+            className="flex items-center justify-center gap-4 mb-12"
           >
             <GlowButton
               href="https://calendly.com/hello-nexauva/30min"
@@ -71,8 +67,14 @@ export function HeroSection() {
               <span>Book A Free Call</span>
               <ArrowRight className="w-4 h-4" />
             </GlowButton>
-          </div>
-          <div className="flex items-center gap-4 justify-center">
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+            className="flex items-center gap-4 justify-center"
+          >
             <a
               href="https://www.linkedin.com/in/abdelfettah-latrache/"
               target="_blank"
@@ -92,8 +94,8 @@ export function HeroSection() {
             >
               <XIcon className="w-5 h-5 social-icon" />
             </a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}

@@ -32,14 +32,9 @@ export function ContactCTASection() {
         <p className="text-center text-gray-400 text-lg max-w-md">Schedule a Call and Begin Automating</p>
 
         {/* Button */}
-        <a
-          href="https://calendly.com/hello-nexauva/30min"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative inline-block group"
-        >
-          <div className="absolute inset-0 btn-glow rounded-lg"></div>
-          <div className="absolute inset-0 btn-stroke rounded-lg"></div>
+        <div className="relative inline-block group">
+          <div className="pointer-events-none absolute inset-0 btn-glow rounded-lg"></div>
+          <div className="pointer-events-none absolute inset-0 btn-stroke rounded-lg"></div>
           <GlowButton
             href="https://calendly.com/hello-nexauva/30min"
             ariaLabel="Book a free call on Calendly"
@@ -48,7 +43,7 @@ export function ContactCTASection() {
             <span>Book A Free Call</span>
             <ArrowRight className="w-4 h-4" />
           </GlowButton>
-        </a>
+        </div>
 
         {/* Social Links */}
         <div className="flex items-center gap-4">
