@@ -9,6 +9,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Suspense } from "react"
 import { BackToTop } from "@/components/ui/back-to-top"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const instrumentSerif = Instrument_Serif({
   weight: "400",
@@ -71,6 +72,7 @@ export default function RootLayout({
         </Suspense>
         <BackToTop />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

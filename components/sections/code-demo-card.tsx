@@ -60,7 +60,7 @@ export function CodeDemoCard() {
   const duration = Math.max(6, delta / SPEED)
 
   return (
-    <div className="relative border border-[#d8e7f2]/10 rounded-2xl p-6 md:p-8 shadow-[inset_0_2px_1px_0_rgba(207,231,255,0.2)] overflow-hidden mb-16 bg-gradient-to-b from-[#060910] to-[#04070d]">
+    <div className="relative border border-[#d8e7f2]/10 rounded-2xl p-6 md:p-8 shadow-[inset_0_2px_1px_0_rgba(207,231,255,0.2)] overflow-hidden bg-gradient-to-b from-[#060910] to-[#04070d] h-full flex flex-col">
       <div className="grid grid-cols-1 gap-8 items-start">
         {/* Left: Code Editor */}
         <div className="bg-black rounded-xl relative max-h-[500px]">
@@ -116,7 +116,7 @@ export function CodeDemoCard() {
                     '        self.current_mode = "idle"',
                     '',
                     '    def evaluate_task(self, workload_value):',
-                    '        if workload_value > self.activation_limit:',
+                    '        if (workload_value > self.activation_limit):',
                     '            self.current_mode = "engaged"',
                     '            return "Agent activated!"',
                     '        else:',

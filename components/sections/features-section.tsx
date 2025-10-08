@@ -140,12 +140,12 @@ export function FeaturesSection() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch"
           >
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="h-full">
               <CodeDemoCard />
             </motion.div>
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="h-full">
               <RealTimeIntelligenceCard />
             </motion.div>
           </motion.div>
@@ -155,15 +155,15 @@ export function FeaturesSection() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch"
           >
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="h-full">
               <IntelligentAnalyticsCard />
             </motion.div>
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="h-full">
               <ProcessAutomationCard />
             </motion.div>
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="h-full">
               <RepetitiveTasksCard />
             </motion.div>
           </motion.div>
