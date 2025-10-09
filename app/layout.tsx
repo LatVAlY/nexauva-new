@@ -10,6 +10,7 @@ import { Footer } from "@/components/footer"
 import { Suspense } from "react"
 import { BackToTop } from "@/components/ui/back-to-top"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { PageTransition } from "@/components/page-transition"
 
 const instrumentSerif = Instrument_Serif({
   weight: "400",
@@ -67,7 +68,9 @@ export default function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable} antialiased`}>
         <Suspense fallback={<div>Loading...</div>}>
           <Navigation />
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
           <Footer />
         </Suspense>
         <BackToTop />
