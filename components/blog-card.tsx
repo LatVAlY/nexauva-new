@@ -1,7 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { motion } from "framer-motion"
 
 interface BlogPost {
   slug: string
@@ -16,8 +19,12 @@ export function BlogCard({ post }: { post: BlogPost }) {
   return (
     <Link href={`/blog/${post.slug}`}>
       <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border hover:bg-card/80 transition-all duration-300 group h-full">
-        {/* Image */}
-        <div className="relative h-64 overflow-hidden">
+        {/* Image (shared element) */}
+        <motion.div
+          layoutId={`post-image-${post.slug}`}
+          className="relative h-64 overflow-hidden"
+          style={{ borderRadius: 16 }}
+        >
           <Image
             src={post.image || "/placeholder.svg"}
             alt={post.title}
@@ -25,7 +32,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
-        </div>
+        </motion.div>
 
         {/* Content */}
         <div className="p-8">
@@ -36,9 +43,12 @@ export function BlogCard({ post }: { post: BlogPost }) {
             <span className="text-sm text-muted-foreground">{post.date}</span>
           </div>
 
-          <h3 className="text-2xl font-medium mb-3 text-balance group-hover:text-muted-foreground transition-colors">
+          <motion.h3
+            layoutId={`post-title-${post.slug}`}
+            className="text-2xl font-medium mb-3 text-balance group-hover:text-muted-foreground transition-colors"
+          >
             {post.title}
-          </h3>
+          </motion.h3>
 
           <p className="text-muted-foreground leading-relaxed">{post.excerpt}</p>
         </div>
