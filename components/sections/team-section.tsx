@@ -24,15 +24,6 @@ const team: TeamMember[] = [
       linkedin: "https://www.linkedin.com/in/abdelfettah-latrache/",
     },
   },
-  {
-    name: "Henoch Munzimba",
-    role: "Designer",
-    image:
-      "https://media.licdn.com/dms/image/v2/D4E03AQEXYja91svVGA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1693409299270?e=1762387200&v=beta&t=vdcUZ9fUU6O42ANVhmmCxOblkVnmpaqc0msKvJn1rx0",
-    socials: {
-       linkedin: "https://www.linkedin.com/in/henoch-munzimba-3a07091b3/",
-    },
-  },
   // {
   //   name: "Sara Weber",
   //   role: "Senior Designer",

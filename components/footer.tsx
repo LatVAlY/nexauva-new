@@ -69,9 +69,11 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col lg:flex-row justify-between items-center gap-4 pt-8 border-t border-border text-sm text-muted-foreground">
-          <p>© 2025 Nexauva</p>
-          <div className="flex items-center gap-4">
+          <p>© 2026 Nexauva</p>
+          <div className="flex items-center gap-2">
             <span>Headquarters in Germany</span>
+            <span aria-hidden="true">·</span>
+            <span>Operating in Qatar &amp; Algeria</span>
           </div>
         </div>
       </div>

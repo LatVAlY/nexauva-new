@@ -5,42 +5,59 @@ import * as THREE from "three";
 
 export default function HeroBackground() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const animationIdRef = useRef<number | null>(null);
-  const asteroidsRef = useRef<THREE.Mesh[]>([]);
-  // Ensure first frame starts centered
-  const firstFrameRef = useRef<boolean>(true);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
     camera.position.set(0, 0, 5);
     camera.lookAt(0, 0, 0);
-    // Add camera to scene and attach a soft headlight so asteroid is visible from POV
     scene.add(camera);
     const povLight = new THREE.PointLight(0xffffff, 2.2, 30, 2);
     camera.add(povLight);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    rendererRef.current = renderer;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    // Brighten overall output a bit
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
-    renderer.setClearColor(0x000000, 0); // transparent
+    renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
-    // Lights
+    // ===== Lights =====
     const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
     dirLight.position.set(5, 5, 5);
     scene.add(dirLight);
     scene.add(new THREE.AmbientLight(0x404040, 0.6));
     scene.add(new THREE.HemisphereLight(0xaec6ff, 0x222222, 0.35));
+    // Cool rim light from behind so the ship's silhouette pops against the dark
+    const rimLight = new THREE.DirectionalLight(0x7ea6ff, 1.4);
+    rimLight.position.set(-4, 2, -6);
+    scene.add(rimLight);
 
-    // Foggy shader-ish plane (simple material for perf)
+    // ===== Shared round sprite texture (stars + trail) =====
+    const spriteSize = 64;
+    const spriteCanvas = document.createElement("canvas");
+    spriteCanvas.width = spriteSize;
+    spriteCanvas.height = spriteSize;
+    const spriteCtx = spriteCanvas.getContext("2d")!;
+    const radial = spriteCtx.createRadialGradient(
+      spriteSize / 2, spriteSize / 2, 0,
+      spriteSize / 2, spriteSize / 2, spriteSize / 2
+    );
+    radial.addColorStop(0, "rgba(255,255,255,1)");
+    radial.addColorStop(0.4, "rgba(255,255,255,0.6)");
+    radial.addColorStop(1, "rgba(255,255,255,0)");
+    spriteCtx.fillStyle = radial;
+    spriteCtx.fillRect(0, 0, spriteSize, spriteSize);
+    const spriteTex = new THREE.CanvasTexture(spriteCanvas);
+
+    // ===== Fog plane =====
     const fogGeometry = new THREE.PlaneGeometry(30, 30);
     const fogMaterial = new THREE.MeshBasicMaterial({
       color: 0x0b1220,
@@ -50,375 +67,441 @@ export default function HeroBackground() {
     const fogPlane = new THREE.Mesh(fogGeometry, fogMaterial);
     fogPlane.position.z = -5;
 
-    // Particles
-    const particlesCount = 300;
-    const positions = new Float32Array(particlesCount * 3);
-    for (let i = 0; i < particlesCount; i++) {
-      positions[i * 3 + 0] = (Math.random() - 0.5) * 30;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
+    // ===== Starfield: two depth layers for parallax =====
+    type StarLayer = {
+      points: THREE.Points;
+      geometry: THREE.BufferGeometry;
+      material: THREE.PointsMaterial;
+      speeds: Float32Array;
+      count: number;
+    };
+
+    function createStarLayer(
+      count: number,
+      size: number,
+      opacity: number,
+      baseSpeed: number
+    ): StarLayer {
+      const positions = new Float32Array(count * 3);
+      const speeds = new Float32Array(count);
+      for (let i = 0; i < count; i++) {
+        positions[i * 3 + 0] = (Math.random() - 0.5) * 30;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
+        speeds[i] = baseSpeed * (0.6 + Math.random() * 0.8);
+      }
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      const material = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size,
+        transparent: true,
+        opacity,
+        sizeAttenuation: true,
+        map: spriteTex,
+        alphaTest: 0.01,
+        depthWrite: false,
+      });
+      return { points: new THREE.Points(geometry, material), geometry, material, speeds, count };
     }
-    const particlesGeometry = new THREE.BufferGeometry();
-    particlesGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(positions, 3)
-    );
 
-    // Simple round sprite
-    const spriteSize = 64;
-    const spriteCanvas = document.createElement("canvas");
-    spriteCanvas.width = spriteSize;
-    spriteCanvas.height = spriteSize;
-    const ctx = spriteCanvas.getContext("2d")!;
-    ctx.clearRect(0, 0, spriteSize, spriteSize);
-    ctx.beginPath();
-    ctx.arc(spriteSize / 2, spriteSize / 2, spriteSize / 2 - 2, 0, Math.PI * 2);
-    ctx.fillStyle = "white";
-    ctx.shadowColor = "white";
-    ctx.shadowBlur = 10;
-    ctx.fill();
-    const spriteTex = new THREE.Texture(spriteCanvas);
-    spriteTex.needsUpdate = true;
+    const farStars = createStarLayer(260, 0.09, 0.5, 0.0012);
+    const nearStars = createStarLayer(150, 0.17, 0.8, 0.0035);
 
-    const particlesMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.15,
-      transparent: true,
-      opacity: 0.7,
-      sizeAttenuation: true,
-      map: spriteTex,
-      alphaTest: 0.01,
-      depthWrite: false,
-    });
+    const starGroup = new THREE.Group();
+    starGroup.add(fogPlane, farStars.points, nearStars.points);
+    scene.add(starGroup);
 
-    const points = new THREE.Points(particlesGeometry, particlesMaterial);
-
-    const group = new THREE.Group();
-    group.add(fogPlane);
-    group.add(points);
-    scene.add(group);
-
-    // Asteroids group
-    const asteroidsGroup = new THREE.Group();
-    scene.add(asteroidsGroup);
-
-    // ===== Asteroids helpers =====
+    // ===== Ship texture =====
     function createNexauvaTexture(): THREE.CanvasTexture {
       const size = 512;
       const canvas = document.createElement("canvas");
       canvas.width = size;
       canvas.height = size;
       const ctx = canvas.getContext("2d")!;
-
-      // Create gradient background
       const gradient = ctx.createLinearGradient(0, 0, size, size);
       gradient.addColorStop(0, "#333333");
       gradient.addColorStop(1, "#222222");
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, size, size);
-
-      // Add text
       ctx.font = "bold 72px Inter, Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-
-      // Create glow effect
       ctx.shadowColor = "#4a6eb0";
       ctx.shadowBlur = 1;
       ctx.fillStyle = "#ffffff";
-
-      // Write company name
       ctx.fillText("NEXAUVA", size / 2, size / 2);
-
-      // Create texture from canvas
       const texture = new THREE.CanvasTexture(canvas);
       texture.needsUpdate = true;
       return texture;
     }
 
-    function addNavigationLights(asteroid: THREE.Mesh, size: number) {
-      const lightColors = [0xff0000, 0xff0000, 0xff0000];
-      const lightsCount = 2 + Math.floor(Math.random() * 3); // 2-4 lights per asteroid
-
-      (asteroid.userData as any).navLights = [] as THREE.PointLight[];
+    // ===== Navigation strobes (aircraft-style: red + white) =====
+    function addNavigationLights(ship: THREE.Mesh, size: number) {
+      const lightColors = [0xff2a2a, 0xff2a2a, 0xffffff];
+      const lightsCount = 3;
+      (ship.userData as any).navLights = [] as THREE.PointLight[];
 
       for (let i = 0; i < lightsCount; i++) {
-        const color =
-          lightColors[Math.floor(Math.random() * lightColors.length)];
-        const light = new THREE.PointLight(color, 0, size * 5); // Start with intensity 0 (off)
-
-        // Position light on the surface of the asteroid
+        const color = lightColors[i % lightColors.length];
+        const light = new THREE.PointLight(color, 0, size * 5);
         const angle1 = Math.random() * Math.PI * 2;
         const angle2 = Math.random() * Math.PI * 2;
-        const x = Math.sin(angle1) * Math.cos(angle2) * size * 1.1;
-        const y = Math.sin(angle1) * Math.sin(angle2) * size * 1.1;
-        const z = Math.cos(angle1) * size * 1.1;
-        light.position.set(x, y, z);
-
-        // Small visible glowing bulb so lights show up even without lighting surfaces
+        light.position.set(
+          Math.sin(angle1) * Math.cos(angle2) * size * 1.1,
+          Math.sin(angle1) * Math.sin(angle2) * size * 1.1,
+          Math.cos(angle1) * size * 1.1
+        );
         const bulbSize = Math.min(Math.max(size * 0.04, 0.01), 0.08);
         const bulb = new THREE.Mesh(
           new THREE.SphereGeometry(bulbSize, 8, 8),
-          new THREE.MeshBasicMaterial({
-            color,
-            transparent: true,
-            opacity: 0.0,
-          })
+          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0 })
         );
         light.add(bulb);
         (light.userData as any) = {
-          maxIntensity: 1 + Math.random() * 2, // Random max brightness
-          blinkSpeed: 0.5 + Math.random() * 0.1, // Random blink speed
-          blinkPhase: Math.random() * Math.PI * 2, // Random starting phase
-          blinkPattern: Math.floor(Math.random() * 3), // Different blink patterns (0, 1, or 2)
+          maxIntensity: 1.2 + Math.random() * 1.6,
+          blinkSpeed: 0.6 + Math.random() * 0.5,
+          blinkPhase: Math.random() * Math.PI * 2,
+          blinkPattern: i % 3,
           bulb,
         };
-
-        asteroid.add(light);
-        (asteroid.userData as any).navLights.push(light);
+        ship.add(light);
+        (ship.userData as any).navLights.push(light);
       }
     }
 
-    function createAsteroid(size: number, baseColor: number): THREE.Mesh {
+    function createShip(size: number, baseColor: number): THREE.Mesh {
       const actualSize = size * 0.15;
       const geometry = new THREE.IcosahedronGeometry(actualSize, 0);
-      const positionAttribute = geometry.getAttribute(
-        "position"
-      ) as THREE.BufferAttribute;
+      const positionAttribute = geometry.getAttribute("position") as THREE.BufferAttribute;
       const vertices = positionAttribute.array as Float32Array;
-
       for (let i = 0; i < vertices.length; i += 3) {
         const distortionFactor = 0.2;
         vertices[i] += (Math.random() - 0.5) * actualSize * distortionFactor;
-        vertices[i + 1] +=
-          (Math.random() - 0.5) * actualSize * distortionFactor;
-        vertices[i + 2] +=
-          (Math.random() - 0.5) * actualSize * distortionFactor;
+        vertices[i + 1] += (Math.random() - 0.5) * actualSize * distortionFactor;
+        vertices[i + 2] += (Math.random() - 0.5) * actualSize * distortionFactor;
       }
-
       positionAttribute.needsUpdate = true;
       geometry.computeVertexNormals();
 
-      const nexauvaTexture = createNexauvaTexture();
-
       const material = new THREE.MeshPhysicalMaterial({
-        color: baseColor || 0x8a7f70, // a warm, rocky tone as fallback
-        roughness: 0.8, // higher roughness for more diffuse rock look
-        metalness: 0.1, // slight metallic edge for subtle sheen
-        reflectivity: 0.6, // still allows some reflections
-        flatShading: false, // use smooth shading for better light gradients
-        map: nexauvaTexture, // your asteroid texture
-        envMapIntensity: 1.5, // stronger reflections to brighten the surface
+        color: baseColor,
+        roughness: 0.8,
+        metalness: 0.1,
+        reflectivity: 0.6,
+        flatShading: false,
+        map: createNexauvaTexture(),
+        envMapIntensity: 1.5,
         normalScale: new THREE.Vector2(1.0, 1.0),
-        clearcoat: 0.2, // adds a faint surface polish
+        clearcoat: 0.2,
         clearcoatRoughness: 0.9,
       });
 
-      const asteroid = new THREE.Mesh(geometry, material);
-
-      (asteroid.userData as any).rotation = {
-        x: Math.random() * 0.006 - 0.003,
-        y: Math.random() * 0.006 - 0.003,
-        z: Math.random() * 0.006 - 0.003,
-      };
-      (asteroid.userData as any).orbit = {
-        radius: 2 + Math.random() * 1, // small, near center
-        speed: 0.0008 + Math.random() * 0.0006,
-        angle: Math.random() * Math.PI * 2,
-        zOffset: -1.5, // push slightly back from POV
-      };
-
-      addNavigationLights(asteroid, actualSize);
-
-      return asteroid;
+      const ship = new THREE.Mesh(geometry, material);
+      addNavigationLights(ship, actualSize);
+      return ship;
     }
 
-    function setupAsteroids(): THREE.Mesh[] {
-      const asteroids: THREE.Mesh[] = [];
-      const colors = [0x666666, 0x555555, 0x444444];
-      const asteroidCount = 1; // start with one, clearly visible in center
+    // ===== Ship rigs: outer group follows path & heading; inner mesh banks =====
+    type PathConfig = {
+      A: number; // horizontal reach
+      B: number; // depth reach
+      yAmp: number;
+      zBase: number;
+      dir: number; // 1 or -1: travel direction around the figure-8
+      speed: number;
+    };
 
-      for (let i = 0; i < asteroidCount; i++) {
-        const size = 12; // smaller so it feels less massive (actualSize ~3)
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const asteroid = createAsteroid(size, color);
+    type ShipRig = {
+      group: THREE.Group;
+      mesh: THREE.Mesh;
+      path: PathConfig;
+      u: number;
+      prevHeading: number;
+      bank: number;
+      firstFrame: boolean;
+    };
 
-        // Ensure orbit keeps it near center and slightly back
-        const orbit = (asteroid.userData as any).orbit;
-        orbit.radius = 2;
-        orbit.speed = 0.01;
-        orbit.zOffset = -0.5;
+    function createShipRig(
+      size: number,
+      color: number,
+      path: PathConfig,
+      u0: number
+    ): ShipRig {
+      const group = new THREE.Group();
+      const mesh = createShip(size, color);
+      group.add(mesh);
 
-        // Start at screen center but a bit back
-        asteroid.position.set(0, 0, orbit.zOffset || 0);
+      scene.add(group);
+      return {
+        group,
+        mesh,
+        path,
+        u: u0,
+        prevHeading: 0,
+        bank: 0,
+        firstFrame: true,
+      };
+    }
 
-        asteroidsGroup.add(asteroid);
-        asteroids.push(asteroid);
+    // ===== Shooting star =====
+    const streakCanvas = document.createElement("canvas");
+    streakCanvas.width = 256;
+    streakCanvas.height = 32;
+    const streakCtx = streakCanvas.getContext("2d")!;
+    const streakGrad = streakCtx.createLinearGradient(0, 0, 256, 0);
+    streakGrad.addColorStop(0, "rgba(255,255,255,0)");
+    streakGrad.addColorStop(0.8, "rgba(200,220,255,0.7)");
+    streakGrad.addColorStop(1, "rgba(255,255,255,1)");
+    streakCtx.fillStyle = streakGrad;
+    streakCtx.fillRect(0, 8, 256, 16);
+    const streakTex = new THREE.CanvasTexture(streakCanvas);
+    const streakMaterial = new THREE.SpriteMaterial({
+      map: streakTex,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const streak = new THREE.Sprite(streakMaterial);
+    streak.scale.set(3.4, 0.16, 1);
+    scene.add(streak);
+
+    const shootingStar = {
+      active: false,
+      t0: 0,
+      dur: 1.1,
+      nextAt: 3 + Math.random() * 5,
+      from: new THREE.Vector3(),
+      to: new THREE.Vector3(),
+    };
+
+    function maybeShootingStar(now: number) {
+      if (shootingStar.active) {
+        const p = (now - shootingStar.t0) / shootingStar.dur;
+        if (p >= 1) {
+          shootingStar.active = false;
+          streakMaterial.opacity = 0;
+          shootingStar.nextAt = now + 4 + Math.random() * 7;
+          return;
+        }
+        streak.position.lerpVectors(shootingStar.from, shootingStar.to, p);
+        streakMaterial.opacity = Math.sin(p * Math.PI) * 0.9;
+      } else if (now >= shootingStar.nextAt) {
+        shootingStar.active = true;
+        shootingStar.t0 = now;
+        const fromX = (Math.random() - 0.2) * 12;
+        const fromY = 3 + Math.random() * 2.5;
+        shootingStar.from.set(fromX, fromY, -6);
+        const dx = -(4 + Math.random() * 4);
+        const dy = -(2 + Math.random() * 2);
+        shootingStar.to.set(fromX + dx, fromY + dy, -6);
+        streakMaterial.rotation = Math.atan2(dy, dx) + Math.PI;
       }
-
-      return asteroids;
     }
 
-    function animateAsteroids(asteroids: THREE.Mesh[]) {
-      if (!asteroids || !asteroids.length) return;
-      const time = Date.now() * 0.001;
-
-      asteroids.forEach((asteroid) => {
-        const rot = (asteroid.userData as any).rotation;
-        asteroid.rotation.x += rot.x;
-        asteroid.rotation.y += rot.y;
-        asteroid.rotation.z += rot.z;
-
-        const orbit = (asteroid.userData as any).orbit;
-        orbit.angle += orbit.speed;
-        orbit.angle = Math.PI / 2;
-        asteroid.position.x = Math.cos(orbit.angle) * orbit.radius;
-        asteroid.position.y = 0;
-        asteroid.position.z = Math.sin(orbit.angle) * orbit.radius + orbit.zOffset;
-        // const orbitRadius = orbit.radius;
-        // asteroid.position.x = Math.cos(orbit.angle) * orbitRadius;
-        // asteroid.position.z =
-        //   Math.sin(orbit.angle) * orbitRadius + (orbit.zOffset || 0); // keep near center but slightly back
-
-        const navLights: THREE.PointLight[] =
-          (asteroid.userData as any).navLights || [];
-        navLights.forEach((light) => {
-          const ud = light.userData as any;
-          const { maxIntensity, blinkSpeed, blinkPhase, blinkPattern, bulb } =
-            ud;
-          let intensity = 0;
-          switch (blinkPattern) {
-            case 0:
-              intensity =
-                Math.abs(Math.sin(time * blinkSpeed + blinkPhase)) *
-                maxIntensity;
-              break;
-            case 1:
-              intensity =
-                Math.sin(time * blinkSpeed + blinkPhase) > 0 ? maxIntensity : 0;
-              break;
-            case 2: {
-              const cycleTime =
-                (time * blinkSpeed + blinkPhase) % (Math.PI * 2);
-              intensity =
-                cycleTime < 0.2 || (cycleTime > 0.5 && cycleTime < 0.7)
-                  ? maxIntensity
-                  : 0;
-              break;
-            }
-          }
-          light.intensity = intensity;
-
-          // Also animate visible bulb opacity/scale so user sees the blinking dot
-          if (bulb && (bulb as THREE.Mesh).material) {
-            const norm: number = maxIntensity ? intensity / maxIntensity : 0;
-            const m = (bulb as THREE.Mesh).material as THREE.MeshBasicMaterial;
-            m.opacity = 0.25 + 0.75 * norm;
-            const s: number = 0.7 + 0.6 * norm;
-            (bulb as THREE.Mesh).scale.set(s, s, s);
-          }
-        });
-      });
+    // ===== Flight paths: compact figure-8s, always in view =====
+    function pathPoint(u: number, p: PathConfig, out: THREE.Vector3) {
+      out.set(
+        Math.sin(u) * p.A,
+        Math.sin(u * 2 + 1.3) * p.yAmp,
+        (Math.sin(u * 2) / 2) * p.B + p.zBase
+      );
     }
 
-    // Resize helper to fit container
+    const ships: ShipRig[] = [
+      // Main ship — close to the viewer
+      createShipRig(
+        9,
+        0x555555,
+        { A: 1.9, B: 1.1, yAmp: 0.3, zBase: -1.0, dir: 1, speed: 0.18 },
+        0
+      ),
+      // Wingman — smaller, farther back, opposite direction & phase
+      createShipRig(
+        5.5,
+        0x4a4a4a,
+        { A: 3.4, B: 1.8, yAmp: 0.7, zBase: -4.5, dir: -1, speed: 0.13 },
+        Math.PI
+      ),
+    ];
+
+    const curPos = new THREE.Vector3();
+    const nextPos = new THREE.Vector3();
+    const vel = new THREE.Vector3();
+    const lookTarget = new THREE.Vector3();
+    const dummy = new THREE.Object3D();
+
+    // Place ships at their start positions immediately (no fly-in)
+    for (const rig of ships) {
+      pathPoint(rig.u, rig.path, curPos);
+      rig.group.position.copy(curPos);
+    }
+
+    // ===== Mouse parallax =====
+    const mouse = { x: 0, y: 0 };
+    const onMouseMove = (e: MouseEvent) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+    };
+    if (!reduceMotion) window.addEventListener("mousemove", onMouseMove);
+
+    // ===== Pause rendering when hero is off-screen =====
+    let inView = true;
+    const observer = new IntersectionObserver(
+      (entries) => { inView = entries[0]?.isIntersecting ?? true; },
+      { threshold: 0 }
+    );
+    observer.observe(container);
+
+    // ===== Resize =====
     const fitToContainer = () => {
       const { clientWidth, clientHeight } = container;
-      renderer.setSize(clientWidth, clientHeight, false);
+      renderer.setSize(clientWidth, clientHeight);
       camera.aspect = clientWidth / Math.max(1, clientHeight);
       camera.updateProjectionMatrix();
     };
-
     fitToContainer();
-
     const onResize = () => fitToContainer();
     window.addEventListener("resize", onResize);
 
-    // Initialize asteroids
-    asteroidsRef.current = setupAsteroids();
+    // ===== Animate =====
+    const clock = new THREE.Clock();
+    let animationId: number | null = null;
 
-    // Animate
     const animate = () => {
-      // gentle movement
-      const pos = particlesGeometry.attributes
-        .position as THREE.BufferAttribute;
-      const arr = pos.array as Float32Array;
-      const t = performance.now() * 0.0003;
-      for (let i = 0; i < particlesCount; i++) {
-        const i3 = i * 3;
-        arr[i3 + 1] += Math.sin(t + i * 0.1) * 0.005;
-        arr[i3 + 0] -= 0.002;
-        if (arr[i3 + 0] < -15) arr[i3 + 0] = 15;
+      animationId = requestAnimationFrame(animate);
+      if (!inView) return;
+
+      const delta = Math.min(clock.getDelta(), 0.05);
+      const now = clock.elapsedTime;
+
+      // Stars: drift + gentle bob, per-layer parallax speed
+      for (const layer of [farStars, nearStars]) {
+        const arr = (layer.geometry.attributes.position as THREE.BufferAttribute)
+          .array as Float32Array;
+        for (let i = 0; i < layer.count; i++) {
+          const i3 = i * 3;
+          arr[i3 + 1] += Math.sin(now * 0.3 + i * 0.1) * 0.004;
+          arr[i3 + 0] -= layer.speeds[i];
+          if (arr[i3 + 0] < -15) arr[i3 + 0] = 15;
+        }
+        (layer.geometry.attributes.position as THREE.BufferAttribute).needsUpdate = true;
       }
-      pos.needsUpdate = true;
+      starGroup.rotation.z += 0.0004;
 
-      group.rotation.z += 0.0005;
+      // Ships: advance along their paths (slow cruise; slower still with reduced motion)
+      for (const rig of ships) {
+        rig.u += delta * rig.path.dir * (reduceMotion ? 0.03 : rig.path.speed);
+        pathPoint(rig.u, rig.path, curPos);
+        pathPoint(rig.u + 0.02 * rig.path.dir, rig.path, nextPos);
+        vel.subVectors(nextPos, curPos);
+        rig.group.position.copy(curPos);
 
-      // Ensure first frame starts centered
-      // if (firstFrameRef.current) {
-      //   asteroidsRef.current.forEach((a) => {
-      //     const o = (a.userData as any).orbit || {};
-      //     a.position.set(0, 0, o.zOffset || 0);
-      //   });
-      //   firstFrameRef.current = false;
-      // }
+        // Heading: smoothly face travel direction
+        lookTarget.copy(rig.group.position).add(vel);
+        dummy.position.copy(rig.group.position);
+        dummy.lookAt(lookTarget);
+        if (rig.firstFrame) {
+          // Snap orientation on the first frame so there's no visible swing-in
+          rig.group.quaternion.copy(dummy.quaternion);
+          rig.prevHeading = Math.atan2(vel.x, vel.z);
+          rig.firstFrame = false;
+        } else {
+          rig.group.quaternion.slerp(dummy.quaternion, 0.08);
+        }
 
-      // animate asteroids
-      animateAsteroids(asteroidsRef.current);
+        // Banking: roll into turns based on heading change
+        const heading = Math.atan2(vel.x, vel.z);
+        let dh = heading - rig.prevHeading;
+        if (dh > Math.PI) dh -= Math.PI * 2;
+        if (dh < -Math.PI) dh += Math.PI * 2;
+        rig.prevHeading = heading;
+        const targetBank = THREE.MathUtils.clamp(-dh * 55, -0.55, 0.55);
+        rig.bank += (targetBank - rig.bank) * 0.06;
+        rig.mesh.rotation.z = rig.bank;
+        rig.mesh.rotation.y += delta * 0.12; // slow idle spin for the rocky look
+      }
+
+      // Shooting stars + parallax (skipped for reduced motion)
+      if (!reduceMotion) {
+        maybeShootingStar(now);
+        camera.position.x += (mouse.x * 0.45 - camera.position.x) * 0.03;
+        camera.position.y += (-mouse.y * 0.28 - camera.position.y) * 0.03;
+        camera.lookAt(0, 0, 0);
+      }
+
+      // Nav light strobes
+      const navLights: THREE.PointLight[] = ships.flatMap(
+        (rig) => ((rig.mesh.userData as any).navLights || []) as THREE.PointLight[]
+      );
+      navLights.forEach((light) => {
+        const ud = light.userData as any;
+        const { maxIntensity, blinkSpeed, blinkPhase, blinkPattern, bulb } = ud;
+        let intensity = 0;
+        switch (blinkPattern) {
+          case 0:
+            intensity = Math.abs(Math.sin(now * blinkSpeed + blinkPhase)) * maxIntensity;
+            break;
+          case 1:
+            intensity = Math.sin(now * blinkSpeed + blinkPhase) > 0 ? maxIntensity : 0;
+            break;
+          case 2: {
+            const cycleTime = (now * blinkSpeed + blinkPhase) % (Math.PI * 2);
+            intensity =
+              cycleTime < 0.2 || (cycleTime > 0.5 && cycleTime < 0.7) ? maxIntensity : 0;
+            break;
+          }
+        }
+        light.intensity = intensity;
+        if (bulb) {
+          const norm: number = maxIntensity ? intensity / maxIntensity : 0;
+          const m = (bulb as THREE.Mesh).material as THREE.MeshBasicMaterial;
+          m.opacity = 0.25 + 0.75 * norm;
+          const s = 0.7 + 0.6 * norm;
+          (bulb as THREE.Mesh).scale.set(s, s, s);
+        }
+      });
 
       renderer.render(scene, camera);
-      animationIdRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
-      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
+      if (animationId !== null) cancelAnimationFrame(animationId);
       window.removeEventListener("resize", onResize);
-      // Cleanup three resources
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      if (!reduceMotion) window.removeEventListener("mousemove", onMouseMove);
+      observer.disconnect();
+
+      for (const layer of [farStars, nearStars]) {
+        layer.geometry.dispose();
+        layer.material.dispose();
+      }
       spriteTex.dispose();
       fogGeometry.dispose();
       fogMaterial.dispose();
+      streakTex.dispose();
+      streakMaterial.dispose();
 
-      // Cleanup asteroids
-      asteroidsRef.current.forEach((asteroid) => {
-        asteroid.children
-          .filter((c): c is THREE.Light => c instanceof THREE.Light)
-          .forEach((light) => {
-            // dispose bulb geometry/material if present
-            const ud = (light.userData as any) || {};
-            const bulb = ud.bulb as THREE.Mesh | undefined;
-            if (bulb) {
-              if ((bulb.material as any)?.dispose)
-                (bulb.material as any).dispose();
-              bulb.geometry.dispose();
-            }
-            asteroid.remove(light);
-          });
-        const mat = asteroid.material;
-        if (Array.isArray(mat)) {
-          mat.forEach((m) => {
-            const asAny = m as any;
-            if (asAny.map && typeof asAny.map.dispose === "function")
-              asAny.map.dispose();
-            m.dispose();
-          });
-        } else if (mat) {
-          const asAny = mat as any;
-          if (asAny.map && typeof asAny.map.dispose === "function")
-            asAny.map.dispose();
-          mat.dispose();
-        }
-        asteroid.geometry.dispose();
-        asteroidsGroup.remove(asteroid);
-      });
-      asteroidsRef.current = [];
+      for (const rig of ships) {
+        const rigLights: THREE.PointLight[] = (rig.mesh.userData as any).navLights || [];
+        rigLights.forEach((light) => {
+          const bulb = (light.userData as any)?.bulb as THREE.Mesh | undefined;
+          if (bulb) {
+            (bulb.material as THREE.Material).dispose();
+            bulb.geometry.dispose();
+          }
+          rig.mesh.remove(light);
+        });
+        const mat = rig.mesh.material as THREE.MeshPhysicalMaterial;
+        mat.map?.dispose();
+        mat.dispose();
+        rig.mesh.geometry.dispose();
+        scene.remove(rig.group);
+      }
 
-      // Remove POV light
       camera.remove(povLight);
-
       renderer.dispose();
       if (renderer.domElement.parentNode)
         renderer.domElement.parentNode.removeChild(renderer.domElement);

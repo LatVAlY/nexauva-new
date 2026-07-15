@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import HeroBackground from "@/components/sections/hero-background";
 import { GlowButton } from "@/components/ui/glow-button";
 import { LinkedInIcon, XIcon } from "../icons/social";
 import { motion } from "framer-motion";
@@ -9,9 +8,6 @@ import { motion } from "framer-motion";
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-15">
-      {/* Background animation scoped to hero only */}
-      <HeroBackground />
-
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-float" />
