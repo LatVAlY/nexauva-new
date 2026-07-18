@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex" />
+  <title>Nexauva — Services Deck</title>
+  <style>
+    @page { size: 1280px 720px; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0b0b0b;
+      --fg: #fafafa;
+      --muted: #a3a3a3;
+      --muted-30: rgba(163, 163, 163, 0.3);
+      --card: rgba(255, 255, 255, 0.045);
+      --border: rgba(255, 255, 255, 0.12);
+      --icon-bg: rgba(255, 255, 255, 0.1);
+    }
+    html, body { background: #000; }
+    body {
+      font-family: "Geist", "Geist Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .serif {
+      font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background: var(--bg);
+      color: var(--fg);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 72px 48px;
+    }
+    .slide:last-child { page-break-after: auto; }
+
+    /* soft corner glows, same feel as the site hero */
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(46% 42% at 82% 4%, rgba(184, 199, 217, 0.09) 0%, rgba(11, 11, 11, 0) 100%),
+        radial-gradient(36% 36% at 8% 96%, rgba(184, 199, 217, 0.05) 0%, rgba(11, 11, 11, 0) 100%);
+      pointer-events: none;
+    }
+    .slide > * { position: relative; }
+
+    /* ---------- shared chrome ---------- */
+    .slide-footer {
+      position: absolute;
+      left: 72px;
+      right: 72px;
+      bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+    .header { text-align: center; margin-bottom: 40px; }
+    h2 { font-size: 40px; font-weight: 300; margin-bottom: 10px; }
+    .header p { font-size: 17px; color: var(--muted); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .icon-box {
+      width: 44px; height: 44px;
+      border-radius: 11px;
+      background: var(--icon-bg);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .icon-box svg { width: 22px; height: 22px; stroke: var(--fg); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ---------- slide 1: cover ---------- */
+    .cover { justify-content: space-between; }
+    .cover-top { display: flex; justify-content: space-between; align-items: center; }
+    .cover-top img { height: 34px; width: auto; }
+    .cover-top span { font-size: 14px; color: var(--muted); }
+    .cover-mid { padding-bottom: 24px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 18px;
+      margin-bottom: 28px;
+    }
+    .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: #7ee787; }
+    h1 { font-size: 66px; font-weight: 300; line-height: 1.08; margin-bottom: 22px; max-width: 900px; }
+    .lead { font-size: 19px; color: var(--muted); line-height: 1.65; max-width: 680px; }
+    .cover-bottom {
+      display: flex; gap: 40px;
+      border-top: 1px solid var(--border);
+      padding-top: 22px;
+      font-size: 14px; color: var(--muted);
+    }
+
+    /* ---------- slide 2: offer ---------- */
+    .offer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: auto 0; }
+    .offer-card { padding: 34px 30px; display: flex; flex-direction: column; }
+    .offer-card h3 { font-size: 22px; font-weight: 500; margin-bottom: 12px; }
+    .offer-card p { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 22px; }
+    .offer-card ul {
+      list-style: none; display: grid; gap: 10px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: auto;
+    }
+    .offer-card li {
+      font-size: 13px; color: var(--muted);
+      display: flex; align-items: center; gap: 9px;
+    }
+    .offer-card li::before {
+      content: ""; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--fg); flex-shrink: 0;
+    }
+
+    /* ---------- slide 3: process ---------- */
+    .steps {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px;
+      margin: auto 0;
+      position: relative;
+      padding-top: 30px;
+    }
+    .steps::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 24px; right: 24px;
+      border-top: 1.5px dashed rgba(255, 255, 255, 0.22);
+    }
+    .step { position: relative; }
+    .step::before {
+      content: "";
+      position: absolute;
+      top: -31px; left: 0;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--fg);
+      box-shadow: 0 0 10px 2px rgba(255,255,255,0.35);
+    }
+    .step-num { font-size: 46px; font-weight: 300; color: var(--muted-30); line-height: 1; margin-bottom: 14px; }
+    .step h3 { font-size: 17.5px; font-weight: 500; line-height: 1.3; margin-bottom: 7px; min-height: 46px; }
+    .step .dur { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 12px; }
+    .step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ---------- slide 4: why ---------- */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: auto 0; }
+    .why-card { padding: 36px 38px; }
+    .why-card h3 { font-size: 21px; font-weight: 500; margin-bottom: 10px; }
+    .why-card p { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+
+    /* ---------- slide 5: cta ---------- */
+    .cta { justify-content: center; align-items: center; text-align: center; }
+    .cta h2 { font-size: 54px; margin-bottom: 18px; }
+    .cta .sub { font-size: 18px; color: var(--muted); max-width: 620px; line-height: 1.65; margin-bottom: 44px; }
+    .cta-row { display: flex; gap: 18px; justify-content: center; margin-bottom: 44px; }
+    .cta-pill {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 999px;
+      padding: 14px 30px;
+      font-size: 15px;
+      color: var(--fg);
+      text-decoration: none;
+    }
+    .cta-pill strong { font-weight: 500; }
+    .cta-pill span { color: var(--muted); margin-right: 8px; }
+    .cta-loc { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <!-- Slide 1 — Cover -->
+  <section class="slide cover">
+    <div class="cover-top">
+      <img src="logo-transparent-small.png" alt="Nexauva" onerror="this.style.display='none'" />
+      <span>nexauva.com</span>
+    </div>
+    <div class="cover-mid">
+      <div class="eyebrow"><span class="dot"></span> Services Overview &nbsp;·&nbsp; Germany · Qatar · Algeria</div>
+      <h1>Where Ideas Meet <span class="serif">Intelligence</span></h1>
+      <p class="lead">
+        Nexauva is an AI &amp; software agency helping ambitious organizations turn ideas
+        into intelligent products — from strategy to engineering to production-grade AI.
+      </p>
+    </div>
+    <div class="cover-bottom">
+      <span>Headquartered in Germany</span>
+      <span>Operating in Qatar &amp; Algeria</span>
+      <span>hello@nexauva.com</span>
+    </div>
+  </section>
+
+  <!-- Slide 2 — What We Offer -->
+  <section class="slide">
+    <div class="header">
+      <h2>What We <span class="serif">Offer</span></h2>
+      <p>Three ways we help you move faster — from first idea to running systems.</p>
+    </div>
+    <div class="offer-grid">
+      <div class="card offer-card">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Consultation</h3>
+        <p>
+          We help you see clearly before you build. Together we analyze your workflows,
+          identify where technology and AI create real leverage, and design a roadmap
+          you can act on with confidence.
+        </p>
+        <ul>
+          <li>Digital &amp; AI strategy</li>
+          <li>Process &amp; workflow analysis</li>
+          <li>Technology selection &amp; architecture review</li>
+          <li>Actionable implementation roadmap</li>
+        </ul>
+      </div>
+      <div class="card offer-card">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Development &amp; Engineering</h3>
+        <p>
+          Senior engineering, end to end. We design, build, and ship modern web platforms,
+          internal tools, and integrations — built to scale and built to last.
+        </p>
+        <ul>
+          <li>Web &amp; platform development</li>
+          <li>API design &amp; system integration</li>
+          <li>Cloud architecture &amp; DevOps</li>
+          <li>Quality, security &amp; performance by default</li>
+        </ul>
+      </div>
+      <div class="card offer-card">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 0-4 4 4 4 0 0 0-3 6.5A4 4 0 0 0 7 19a4 4 0 0 0 5 3 4 4 0 0 0 5-3 4 4 0 0 0 2-6.5A4 4 0 0 0 16 6a4 4 0 0 0-4-4z"/><path d="M12 2v20"/></svg>
+        </div>
+        <h3>AI Development</h3>
+        <p>
+          Production AI, not demos. We build intelligent automation, AI assistants, and
+          analytics that plug into your existing tools and deliver measurable results.
+        </p>
+        <ul>
+          <li>AI workflow automation</li>
+          <li>Custom AI assistants &amp; agents</li>
+          <li>AI-powered analytics &amp; insights</li>
+          <li>Safe, compliant &amp; monitored in production</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Nexauva — Services Overview</span><span>02</span></div>
+  </section>
+
+  <!-- Slide 3 — How We Work -->
+  <section class="slide">
+    <div class="header">
+      <h2>How We <span class="serif">Work</span></h2>
+      <p>A clear, proven process — you always know where your project stands.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Kickoff Call &amp; Project Discovery</h3>
+        <span class="dur">1–2 weeks</span>
+        <p>We start with a call to understand your business and goals, then dive into your workflows to find the highest-impact opportunities.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Strategy &amp; Planning</h3>
+        <span class="dur">1 week</span>
+        <p>We turn findings into a tailored roadmap: solution design, tool selection, and a concrete plan you can hold us accountable to.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Implementation &amp; Integration</h3>
+        <span class="dur">2–4 weeks</span>
+        <p>We build your solution and integrate it with your existing tools, testing thoroughly at every step.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Launch</h3>
+        <span class="dur">Launch week</span>
+        <p>We go live with close monitoring, train your team, and make sure everything runs smoothly from day one.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <h3>Optimization &amp; Ongoing Support</h3>
+        <span class="dur">Ongoing</span>
+        <p>After launch we keep measuring, improving, and supporting — so results compound over time.</p>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Nexauva — Services Overview</span><span>03</span></div>
+  </section>
+
+  <!-- Slide 4 — Why Nexauva -->
+  <section class="slide">
+    <div class="header">
+      <h2>Why <span class="serif">Nexauva</span></h2>
+      <p>What our clients value about working with us.</p>
+    </div>
+    <div class="why-grid">
+      <div class="card why-card">
+        <h3>German engineering standards</h3>
+        <p>Headquartered in Germany, we bring European quality, reliability, and data-protection standards (GDPR) to every engagement.</p>
+      </div>
+      <div class="card why-card">
+        <h3>Local presence in Qatar &amp; Algeria</h3>
+        <p>We operate in Qatar and Algeria with local invoicing and support — international expertise, delivered as a local partner.</p>
+      </div>
+      <div class="card why-card">
+        <h3>End-to-end ownership</h3>
+        <p>Strategy, design, engineering, and AI under one roof. One team accountable from the first workshop to production.</p>
+      </div>
+      <div class="card why-card">
+        <h3>Results you can measure</h3>
+        <p>We define success metrics up front and optimize against them — time saved, costs reduced, revenue enabled.</p>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Nexauva — Services Overview</span><span>04</span></div>
+  </section>
+
+  <!-- Slide 5 — CTA -->
+  <section class="slide cta">
+    <h2>Let's build something <span class="serif">intelligent</span></h2>
+    <p class="sub">Book a consultation — we'll discuss your goals and show you exactly how we can help.</p>
+    <div class="cta-row">
+      <a class="cta-pill" href="mailto:hello@nexauva.com"><span>Email</span><strong>hello@nexauva.com</strong></a>
+      <a class="cta-pill" href="https://nexauva.com"><span>Web</span><strong>nexauva.com</strong></a>
+      <a class="cta-pill" href="https://calendly.com/hello-nexauva/30min"><span>Book</span><strong>calendly.com/hello-nexauva</strong></a>
+    </div>
+    <p class="cta-loc">Germany · Qatar · Algeria</p>
+  </section>
+
+</body>
+</html>
