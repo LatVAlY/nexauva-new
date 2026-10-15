@@ -58,7 +58,7 @@ export function ContactCTASection() {
           </a>
           <div className="w-px h-6 separation"></div>
           <a
-            href="https://x.com/AbdelVA"
+            href="https://x.com/AbdelLatrache"
             target="_blank"
             rel="noopener noreferrer"
             className="w-10 h-10 flex items-center justify-center rounded-full p-2"

@@ -19,7 +19,7 @@ export function Footer() {
       href: "https://www.linkedin.com/in/abdelfettah-latrache/",
       label: "LinkedIn",
     },
-    { icon: XIcon, href: "https://x.com/AbdelVA", label: "Twitter" },
+    { icon: XIcon, href: "https://x.com/AbdelLatrache", label: "Twitter" },
   ];
 
   return (

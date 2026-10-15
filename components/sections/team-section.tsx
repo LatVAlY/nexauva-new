@@ -20,7 +20,7 @@ const team: TeamMember[] = [
     image:
       "https://pbs.twimg.com/profile_images/1564466669459734528/5_2XCjie_400x400.jpg",
     socials: {
-      twitter: "https://x.com/AbdelVA",
+      twitter: "https://x.com/AbdelLatrache",
       linkedin: "https://www.linkedin.com/in/abdelfettah-latrache/",
     },
   },

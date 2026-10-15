@@ -572,7 +572,7 @@ export default function HomePage() {
           </svg>
         </a>
         <a
-          href="https://x.com/AbdelVA"
+          href="https://x.com/AbdelLatrache"
           target="_blank"
           rel="noopener noreferrer"
           className="social-icon"
